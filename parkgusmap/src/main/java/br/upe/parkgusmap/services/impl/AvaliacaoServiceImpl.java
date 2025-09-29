@@ -40,6 +40,8 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
         avaliacao.setLocal(local);
         avaliacao.setAvaliacao(nota);
 
+        //Lombok não ta criando os setters e getters!!
+
         return avaliacaoRepository.save(avaliacao);
     }
 
