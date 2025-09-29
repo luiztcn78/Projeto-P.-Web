@@ -1,5 +1,8 @@
 package br.upe.parkgusmap.services;
 
+import br.upe.parkgusmap.entities.Comentario;
+
 public interface ComentarioService {
-    //Listar os comentarios de um parque
+
+    public Comentario criarComentario(Long avaliadorId, Long localId, String texto);
 }

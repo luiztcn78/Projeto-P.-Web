@@ -1,13 +1,11 @@
 package br.upe.parkgusmap.repositories;
 
 import br.upe.parkgusmap.entities.Avaliacao;
-import br.upe.parkgusmap.entities.Comentario;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.upe.parkgusmap.entities.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
-
+public interface LocalRepository extends JpaRepository<Local, Long> {
 
 }

@@ -1,14 +1,11 @@
 package br.upe.parkgusmap.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comentario {
@@ -20,5 +17,9 @@ public class Comentario {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private UsuarioAvaliador usuario;
+    private UsuarioAvaliador Avaliador;
+
+    @ManyToOne
+    @JoinColumn(name = "local_id", nullable = false)
+    private Local local;
 }

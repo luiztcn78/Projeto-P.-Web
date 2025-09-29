@@ -1,5 +1,7 @@
 package br.upe.parkgusmap.services;
 
+import br.upe.parkgusmap.entities.Avaliacao;
+
 public interface AvaliacaoService {
-    //Listar as avaliações de um parque
+    public Avaliacao criarAvaliacao(Long avaliadorId, Long localId, int nota);
 }
