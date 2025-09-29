@@ -30,25 +30,24 @@ public class Local {
     private String descricao;
 
     @Column(length = 1024)
-    private String informacoes;
+    private String informacoes; // Horário, permissões, proibições, etc.
 
     @ElementCollection
     @CollectionTable(name = "local_imagens", joinColumns = @JoinColumn(name = "local_id"))
     @Column(name = "imagem_url")
     private List<String> imagens;
 
+    // Armazenar as especificações separadas?????????????????? dos porntos do parque??
     @ElementCollection
     @CollectionTable(name = "local_especificacoes", joinColumns = @JoinColumn(name = "local_id"))
     @Column(name = "especificacao")
     private List<String> especificacoes;
 
+
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
     private List<Comentario> comentarios = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
     private List<Avaliacao> avaliacoes = new ArrayList<>();
-
-    // NOVO: Relacionamento com Evento
-    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
-    private List<Evento> eventos = new ArrayList<>();
 }

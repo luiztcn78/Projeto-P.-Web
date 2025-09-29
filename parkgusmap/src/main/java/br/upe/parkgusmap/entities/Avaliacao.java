@@ -1,10 +1,10 @@
 package br.upe.parkgusmap.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -12,23 +12,21 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Avaliacao {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Min(1)
-    @Max(5)
-    @Column(nullable = false)
-    private int avaliacao;  // corrigido de 'avalicao'
+    private Integer nota;
 
-    @ManyToOne
-    @JoinColumn(name = "usuariova_id", nullable = false)
-    private UsuarioAvaliador avaliador;
+    @Column(length = 1024)
+    private String comentario;
 
-    @ManyToOne
-    @JoinColumn(name = "local_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_avaliador_id")
+    private UsuarioAvaliador usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "local_id")
     private Local local;
-
 }
-
-

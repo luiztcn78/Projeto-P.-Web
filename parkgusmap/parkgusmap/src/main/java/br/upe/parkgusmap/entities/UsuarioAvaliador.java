@@ -1,11 +1,8 @@
 package br.upe.parkgusmap.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,12 +24,10 @@ public class UsuarioAvaliador {
     @Column(nullable = false)
     private String senha;
 
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Avaliacao> avaliacoes;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comentario> comentarios;
-
-    @ManyToMany(mappedBy = "avaliadores")
-    private List<Evento> eventos = new ArrayList<>();
 }

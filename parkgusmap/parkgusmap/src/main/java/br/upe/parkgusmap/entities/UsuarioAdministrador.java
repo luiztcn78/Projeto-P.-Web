@@ -1,13 +1,7 @@
 package br.upe.parkgusmap.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.*;
 
 @Entity
 @Setter
@@ -32,6 +26,4 @@ public class UsuarioAdministrador {
     @Column(unique = true, nullable = false)
     private String cpf;
 
-    @OneToMany(mappedBy = "administrador", cascade = CascadeType.ALL)
-    private List<Evento> eventos = new ArrayList<>();
 }

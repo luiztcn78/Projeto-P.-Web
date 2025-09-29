@@ -4,24 +4,22 @@ import br.upe.parkgusmap.entities.Avaliacao;
 import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.UsuarioAvaliador;
 import br.upe.parkgusmap.repositories.AvaliacaoRepository;
-import br.upe.parkgusmap.repositories.ComentarioRepository;
 import br.upe.parkgusmap.repositories.LocalRepository;
 import br.upe.parkgusmap.repositories.UsuarioAvaliadorRepository;
 import br.upe.parkgusmap.services.AvaliacaoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
+@RequiredArgsConstructor
 public class AvaliacaoServiceImpl implements AvaliacaoService {
 
-    @Autowired
-    private AvaliacaoRepository avaliacaoRepository;
-
-    @Autowired
-    private UsuarioAvaliadorRepository usuarioAvaliadorRepository;
-
-    @Autowired
-    private LocalRepository localRepository;
+    private final AvaliacaoRepository avaliacaoRepository;
+    private final UsuarioAvaliadorRepository usuarioAvaliadorRepository;
+    private final LocalRepository localRepository;
 
     @Override
     public Avaliacao criarAvaliacao(Long avaliadorId, Long localId, int nota) {
@@ -36,13 +34,52 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
         }
 
         Avaliacao avaliacao = new Avaliacao();
-        avaliacao.setAvaliador(avaliador);
+        avaliacao.setUsuario(avaliador);
         avaliacao.setLocal(local);
-        avaliacao.setAvaliacao(nota);
-
-        //Lombok não ta criando os setters e getters!!
+        avaliacao.setNota(nota);
 
         return avaliacaoRepository.save(avaliacao);
     }
 
+    @Override
+    public List<Avaliacao> findAll() {
+        return avaliacaoRepository.findAll();
+    }
+
+    @Override
+    public Optional<Avaliacao> findById(Long id) {
+        return avaliacaoRepository.findById(id);
+    }
+
+    @Override
+    public Avaliacao save(Avaliacao avaliacao) {
+        return avaliacaoRepository.save(avaliacao);
+    }
+
+    @Override
+    public Avaliacao update(Long id, Avaliacao avaliacao) {
+        if (!avaliacaoRepository.existsById(id)) {
+            throw new RuntimeException("Avaliação não encontrada com id: " + id);
+        }
+        avaliacao.setId(id);
+        return avaliacaoRepository.save(avaliacao);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        if (!avaliacaoRepository.existsById(id)) {
+            throw new RuntimeException("Avaliação não encontrada com id: " + id);
+        }
+        avaliacaoRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Avaliacao> findByUsuarioId(Long usuarioId) {
+        return avaliacaoRepository.findByUsuarioId(usuarioId);
+    }
+
+    @Override
+    public List<Avaliacao> findByLocalId(Long localId) {
+        return avaliacaoRepository.findByLocalId(localId);
+    }
 }
