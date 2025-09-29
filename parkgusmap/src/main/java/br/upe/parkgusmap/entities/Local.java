@@ -48,7 +48,11 @@ public class Local {
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
-    // NOVO: Relacionamento com Evento
+    //  Relacionamento com Evento
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
     private List<Evento> eventos = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "administrador_id", nullable = false)
+    private UsuarioAdministrador administrador;
 }

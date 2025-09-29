@@ -9,4 +9,5 @@ public interface UsuarioAdministradorService {
     public UsuarioAdministrador cadastraUsuarioAdministrador(UsuarioAdministrador usuarioadm);
     public boolean removerUsuarioAdministrador(Long id);
     public List<UsuarioAdministrador> listarUsuariosAdministrador();
+    UsuarioAdministrador buscarUsuarioAdministradorPorId(Long id);
 }

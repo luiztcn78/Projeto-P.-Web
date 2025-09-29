@@ -47,4 +47,9 @@ public class UsuarioAvaliadorImpl implements UsuarioAvaliadorService {
     public List<UsuarioAvaliador> listarUsuariosAvaliador() {
         return usuarioAvaliadorRepository.findAll();
     }
+
+    @Override
+    public UsuarioAvaliador buscarUsuarioAvaliador(Long id) {
+        return usuarioAvaliadorRepository.findById(id).orElse(null);
+    }
 }

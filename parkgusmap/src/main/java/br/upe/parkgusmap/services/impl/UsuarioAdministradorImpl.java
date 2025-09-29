@@ -46,5 +46,12 @@ public class UsuarioAdministradorImpl implements UsuarioAdministradorService {
     public List<UsuarioAdministrador> listarUsuariosAdministrador() {
         return usuarioAdministradorRepository.findAll();
     }
+
+    @Override
+    public UsuarioAdministrador buscarUsuarioAdministradorPorId(Long id) {
+        return usuarioAdministradorRepository.findById(id).orElse(null);
+
+    }
+
 }
 

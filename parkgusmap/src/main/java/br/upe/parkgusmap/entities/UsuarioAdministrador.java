@@ -32,6 +32,9 @@ public class UsuarioAdministrador {
     @Column(unique = true, nullable = false)
     private String cpf;
 
+    @OneToMany(mappedBy = "administrador", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Local> locaisAdministrados = new ArrayList<>();
+
     @OneToMany(mappedBy = "administrador", cascade = CascadeType.ALL)
     private List<Evento> eventos = new ArrayList<>();
 }
