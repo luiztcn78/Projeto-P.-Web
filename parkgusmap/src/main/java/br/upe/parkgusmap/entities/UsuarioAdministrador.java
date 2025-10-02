@@ -1,5 +1,6 @@
 package br.upe.parkgusmap.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "usuarioadministrador")
 public class UsuarioAdministrador {
 
     @Id
@@ -33,8 +35,10 @@ public class UsuarioAdministrador {
     private String cpf;
 
     @OneToMany(mappedBy = "administrador", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Local> locaisAdministrados = new ArrayList<>();
 
     @OneToMany(mappedBy = "administrador", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Evento> eventos = new ArrayList<>();
 }

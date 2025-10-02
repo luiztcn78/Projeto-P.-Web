@@ -1,5 +1,6 @@
 package br.upe.parkgusmap.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,13 +44,15 @@ public class Local {
     private List<String> especificacoes;
 
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Comentario> comentarios = new ArrayList<>();
 
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
-    //  Relacionamento com Evento
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Evento> eventos = new ArrayList<>();
 
     @ManyToOne
