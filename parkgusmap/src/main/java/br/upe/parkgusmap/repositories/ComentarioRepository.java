@@ -10,4 +10,5 @@ import java.util.List;
 public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
     List<Comentario> findByUsuarioId(Long usuarioId);
     List<Comentario> findByLocalId(Long localId);
+    List<Comentario> findByUsuarioIdAndLocalId(Long usuarioId, Long localId);
 }

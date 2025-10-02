@@ -82,4 +82,9 @@ public class ComentarioServiceImpl implements ComentarioService {
     public List<Comentario> findByLocalId(Long localId) {
         return comentarioRepository.findByLocalId(localId);
     }
+
+    @Override
+    public List<Comentario> findByUsuarioIdAndLocalId(Long usuarioId, Long localId) {
+        return comentarioRepository.findByUsuarioIdAndLocalId(usuarioId, localId);
+    }
 }

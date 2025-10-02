@@ -21,4 +21,6 @@ public interface ComentarioService {
     List<Comentario> findByUsuarioId(Long usuarioId);
     
     List<Comentario> findByLocalId(Long localId);
+
+    List<Comentario> findByUsuarioIdAndLocalId(Long usuarioId, Long localId);
 }

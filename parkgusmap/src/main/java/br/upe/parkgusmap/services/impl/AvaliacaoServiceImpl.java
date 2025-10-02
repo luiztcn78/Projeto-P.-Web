@@ -82,4 +82,11 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
     public List<Avaliacao> findByLocalId(Long localId) {
         return avaliacaoRepository.findByLocalId(localId);
     }
+
+    @Override
+    public List<Avaliacao> findByUsuarioIdAndLocalId(Long usuarioId, Long localId) {
+        return avaliacaoRepository.findByUsuarioIdAndLocalId(usuarioId, localId);
+    }
+
+
 }
