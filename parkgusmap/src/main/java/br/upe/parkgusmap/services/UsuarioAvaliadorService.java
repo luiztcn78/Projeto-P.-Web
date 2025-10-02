@@ -10,5 +10,7 @@ public interface UsuarioAvaliadorService {
     public UsuarioAvaliador cadastraUsuarioAvaliador(UsuarioAvaliador usuarioava);
     public boolean removerUsuarioAvaliador(Long id);
     public List<UsuarioAvaliador> listarUsuariosAvaliador();
-    UsuarioAvaliador buscarUsuarioAvaliador(Long id);
+    public UsuarioAvaliador buscarUsuarioAvaliador(Long id);
+    public boolean validarUsuarioAvaliador(UsuarioAvaliador usuarioava);
+
 }

@@ -19,9 +19,6 @@ public class Avaliacao {
 
     private Integer nota;
 
-    @Column(length = 1024)
-    private String comentario;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_avaliador_id")
     private UsuarioAvaliador usuario;

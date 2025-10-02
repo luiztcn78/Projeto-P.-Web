@@ -18,22 +18,25 @@ public class UsuarioAvaliadorImpl implements UsuarioAvaliadorService {
 
     @Override
     public UsuarioAvaliador cadastraUsuarioAvaliador(UsuarioAvaliador usuarioava) {
-        validarNome(usuarioava.getNome());
-        validarEmail(usuarioava.getEmail());
-
-        return usuarioAvaliadorRepository.save(usuarioava);
+        if(validarUsuarioAvaliador(usuarioava)){
+            return usuarioAvaliadorRepository.save(usuarioava);
+        }
+        return null;
     }
 
-    public void validarEmail(String email){
-        if(usuarioAvaliadorRepository.findByEmail(email) != null){
+    @Override
+    public boolean validarUsuarioAvaliador(UsuarioAvaliador usuarioava) {
+        if(usuarioAvaliadorRepository.findByEmail(usuarioava.getEmail()) != null){
+
             throw new IllegalArgumentException("Email já cadastrado");
-        }
-    }
 
-    private void validarNome(String nome) {
-        if (nome == null || nome.isEmpty()) {
-            throw new IllegalArgumentException("Nome não pode ser vazio");
         }
+        else if (usuarioava.getNome() == null || usuarioava.getNome().isEmpty()) {
+
+            throw new IllegalArgumentException("Nome não pode ser vazio");
+
+        }
+        return true;
     }
 
     @Override
