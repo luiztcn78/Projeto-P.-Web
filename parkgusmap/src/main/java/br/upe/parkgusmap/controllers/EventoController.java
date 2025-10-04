@@ -19,8 +19,9 @@ public class EventoController {
 
     @PostMapping
     public ResponseEntity<Evento> registrarEvento(@RequestBody EventoDTO eventodto){
-        
-        Evento eventoResgistro = eventoService.registrarEvento(evento);
+
+        Evento eventoDesDTO = eventoService.eventoDTOToEvento(eventodto);
+        Evento eventoResgistro = eventoService.registrarEvento(eventoDesDTO);
 
         if(eventoResgistro != null){
             return ResponseEntity.ok(eventoResgistro);
