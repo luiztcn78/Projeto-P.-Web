@@ -1,7 +1,10 @@
 package br.upe.parkgusmap.services.impl;
 
+import br.upe.parkgusmap.entities.Enums.Perfil;
 import br.upe.parkgusmap.entities.Local;
+import br.upe.parkgusmap.entities.Usuario;
 import br.upe.parkgusmap.repositories.LocalRepository;
+import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.LocalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ public class LocalServiceImpl implements LocalService {
 
     @Autowired
     private LocalRepository localRepository;
+    private UsuarioRepository usuarioRepository;
 
 
     @Override
@@ -55,8 +59,8 @@ public class LocalServiceImpl implements LocalService {
     }
 
     @Override
-    public List<Local> findByAdministradorId(Long administradorId) {
-        return localRepository.findByAdministradorId(administradorId);
+    public List<Local> findByAdministradorId(Long usuarioId) {
+        return localRepository.findByAdministradorId(usuarioId);
     }
 
     @Override
@@ -73,4 +77,38 @@ public class LocalServiceImpl implements LocalService {
     public List<Local> findByNomeOrEnderecoContaining(String termo) {
         return localRepository.findByNomeOrEnderecoContaining(termo);
     }
+
+    @Override
+    public Local addAdministradorToLocal(Long localId, Long usuarioId) {
+        Local local = localRepository.findById(localId)
+                .orElseThrow(() -> new RuntimeException("Local não encontrado"));
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!usuario.getPerfil().equals(Perfil.ADMINISTRADOR)) {
+            throw new RuntimeException("Usuário não possui perfil de ADMINISTRADOR");
+        }
+
+        if (!local.getAdministradores().contains(usuario)) {
+            local.getAdministradores().add(usuario);
+            return localRepository.save(local);
+        }
+
+        return local;
+    }
+
+    @Override
+    public Local removeAdministradorFromLocal(Long localId, Long usuarioId) {
+        Local local = localRepository.findById(localId)
+                .orElseThrow(() -> new RuntimeException("Local não encontrado"));
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        local.getAdministradores().remove(usuario);
+        return localRepository.save(local);
+    }
+
+
 }

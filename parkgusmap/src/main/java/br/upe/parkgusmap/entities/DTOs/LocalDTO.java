@@ -1,6 +1,7 @@
 package br.upe.parkgusmap.entities.DTOs;
 
 import br.upe.parkgusmap.entities.Local;
+import br.upe.parkgusmap.entities.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ public class LocalDTO {
     private String informacoes;
     private List<String> imagens;
     private List<String> especificacoes;
-    private Long administradorId;
+    private List<Long> administradoresIds;
 
     public LocalDTO(Local local) {
         this.id = local.getId();
@@ -30,6 +31,8 @@ public class LocalDTO {
         this.informacoes = local.getInformacoes();
         this.imagens = local.getImagens();
         this.especificacoes = local.getEspecificacoes();
-        this.administradorId = local.getAdministrador().getId();
+        this.administradoresIds = local.getAdministradores().stream()
+                .map(Usuario::getId)
+                .toList();
     }
 }

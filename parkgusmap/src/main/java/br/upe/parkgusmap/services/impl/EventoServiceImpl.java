@@ -1,14 +1,15 @@
 package br.upe.parkgusmap.services.impl;
 
 import br.upe.parkgusmap.entities.DTOs.EventoDTO;
+import br.upe.parkgusmap.entities.Enums.Perfil;
 import br.upe.parkgusmap.entities.Evento;
-import br.upe.parkgusmap.entities.UsuarioAvaliador;
+import br.upe.parkgusmap.entities.Usuario;
 import br.upe.parkgusmap.repositories.EventoRepository;
-import br.upe.parkgusmap.repositories.UsuarioAvaliadorRepository;
+import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.EventoService;
 import br.upe.parkgusmap.services.LocalService;
-import br.upe.parkgusmap.services.UsuarioAdministradorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,8 +20,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EventoServiceImpl implements EventoService {
 
+    @Autowired
     private final EventoRepository eventoRepository;
-    private final UsuarioAvaliadorRepository avaliadorRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final LocalService localService;
 
     @Override
     public List<Evento> findAll() {
@@ -60,10 +63,6 @@ public class EventoServiceImpl implements EventoService {
         return eventoRepository.findByLocalId(localId);
     }
 
-    @Override
-    public List<Evento> findByAdministradorId(Long administradorId) {
-        return eventoRepository.findByAdministradorId(administradorId);
-    }
 
     @Override
     public List<Evento> findByPeriodo(LocalDateTime inicio, LocalDateTime fim) {
@@ -76,53 +75,57 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public List<Evento> findByAvaliadorId(Long avaliadorId) {
-        return eventoRepository.findByAvaliadorId(avaliadorId);
+    public List<Evento> findByAdministradorId(Long usuarioId) {
+        return eventoRepository.findByAdministradorId(usuarioId);
     }
 
     @Override
-    public Evento addAvaliadorToEvento(Long eventoId, Long avaliadorId) {
+    public Evento addAdministradorToEvento(Long eventoId, Long usuarioId) {
         Evento evento = eventoRepository.findById(eventoId)
                 .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
-        
-        UsuarioAvaliador avaliador = avaliadorRepository.findById(avaliadorId)
-                .orElseThrow(() -> new RuntimeException("Avaliador não encontrado"));
-        
-        if (!evento.getAvaliadores().contains(avaliador)) {
-            evento.getAvaliadores().add(avaliador);
+
+        Usuario admin = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (admin.getPerfil() != Perfil.ADMINISTRADOR) {
+            throw new RuntimeException("O usuário não é um administrador");
+        }
+
+        if (!evento.getAdministradores().contains(admin)) {
+            evento.getAdministradores().add(admin);
             return eventoRepository.save(evento);
         }
-        
         return evento;
     }
 
     @Override
-    public Evento removeAvaliadorFromEvento(Long eventoId, Long avaliadorId) {
+    public Evento removeAdministradorFromEvento(Long eventoId, Long usuarioId) {
         Evento evento = eventoRepository.findById(eventoId)
                 .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
-        
-        UsuarioAvaliador avaliador = avaliadorRepository.findById(avaliadorId)
-                .orElseThrow(() -> new RuntimeException("Avaliador não encontrado"));
-        
-        evento.getAvaliadores().remove(avaliador);
+
+        Usuario admin = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        evento.getAdministradores().remove(admin);
         return eventoRepository.save(evento);
     }
 
-    @Override
     public Evento eventoDTOToEvento(EventoDTO eventoDTO) {
-        UsuarioAdministradorService admService = new UsuarioAdministradorImpl();
-        LocalService localservice = new LocalServiceImpl();
         Evento evento = new Evento();
-
         evento.setId(eventoDTO.getId());
-        evento.setAdministrador(admService.buscarUsuarioAdministradorPorId(eventoDTO.getAdminId()));
         evento.setDataHoraFim(eventoDTO.getDataFim());
         evento.setEndereco(eventoDTO.getEndereco());
         evento.setNome(eventoDTO.getNome());
         evento.setDataHoraInicio(eventoDTO.getDataInicio());
-        evento.setLocal(localservice.buscarLocalPorId(eventoDTO.getLocalId()));
+        evento.setLocal(localService.buscarLocalPorId(eventoDTO.getLocalId()));
         evento.setImagens(eventoDTO.getImagens());
         evento.setDescricao(eventoDTO.getDescricao());
+
+        // Se você quiser adicionar administradores diretamente do DTO:
+        if (eventoDTO.getAdministradoresIds() != null && !eventoDTO.getAdministradoresIds().isEmpty()) {
+            List<Usuario> admins = usuarioRepository.findAllById(eventoDTO.getAdministradoresIds());
+            evento.setAdministradores(admins);
+        }
 
         return evento;
     }

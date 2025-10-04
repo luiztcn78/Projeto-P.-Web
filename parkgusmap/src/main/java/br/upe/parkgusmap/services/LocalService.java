@@ -18,11 +18,15 @@ public interface LocalService {
     
     void deleteById(Long id);
     
-    List<Local> findByAdministradorId(Long administradorId);
+    List<Local> findByAdministradorId(Long usuarioId);
     
     List<Local> findByNomeContaining(String nome);
     
     List<Local> findByEnderecoContaining(String endereco);
     
     List<Local> findByNomeOrEnderecoContaining(String termo);
+
+    Local addAdministradorToLocal(Long localId, Long usuarioId);
+
+    Local removeAdministradorFromLocal(Long localId, Long usuarioId);
 }

@@ -20,8 +20,8 @@ public class Avaliacao {
     private Integer nota;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_avaliador_id")
-    private UsuarioAvaliador usuario;
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")

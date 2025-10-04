@@ -11,16 +11,14 @@ import java.util.List;
 
 @Repository
 public interface EventoRepository extends JpaRepository<Evento, Long> {
-    
+
     List<Evento> findByLocalId(Long localId);
-    
-    List<Evento> findByAdministradorId(Long administradorId);
-    
+
     List<Evento> findByDataHoraInicioBetween(LocalDateTime inicio, LocalDateTime fim);
-    
+
     @Query("SELECT e FROM Evento e WHERE e.dataHoraInicio > :agora ORDER BY e.dataHoraInicio ASC")
     List<Evento> findEventosFuturos(@Param("agora") LocalDateTime agora);
-    
-    @Query("SELECT e FROM Evento e JOIN e.avaliadores a WHERE a.id = :avaliadorId")
-    List<Evento> findByAvaliadorId(@Param("avaliadorId") Long avaliadorId);
+
+    @Query("SELECT e FROM Evento e JOIN e.administradores a WHERE a.id = :usuarioId")
+    List<Evento> findByAdministradorId(@Param("usuarioId") Long usuarioId);
 }

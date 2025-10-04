@@ -11,14 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UsuarioDTO {
+public class UsuarioResponsivoDTO {
 
     private Long id;
     private String nome;
     private String email;
     private Perfil perfil;
 
-    public UsuarioDTO(Usuario usuario) {
+    public UsuarioResponsivoDTO(Usuario usuario) {
         this.id = usuario.getId();
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();

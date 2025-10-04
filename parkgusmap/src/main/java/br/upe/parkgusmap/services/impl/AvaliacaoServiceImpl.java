@@ -2,10 +2,10 @@ package br.upe.parkgusmap.services.impl;
 
 import br.upe.parkgusmap.entities.Avaliacao;
 import br.upe.parkgusmap.entities.Local;
-import br.upe.parkgusmap.entities.UsuarioAvaliador;
+import br.upe.parkgusmap.entities.Usuario;
 import br.upe.parkgusmap.repositories.AvaliacaoRepository;
 import br.upe.parkgusmap.repositories.LocalRepository;
-import br.upe.parkgusmap.repositories.UsuarioAvaliadorRepository;
+import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.AvaliacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ import java.util.Optional;
 public class AvaliacaoServiceImpl implements AvaliacaoService {
 
     private final AvaliacaoRepository avaliacaoRepository;
-    private final UsuarioAvaliadorRepository usuarioAvaliadorRepository;
+    private final UsuarioRepository usuarioRepository;
     private final LocalRepository localRepository;
 
     @Override
-    public Avaliacao criarAvaliacao(Long avaliadorId, Long localId, int nota) {
-        UsuarioAvaliador avaliador = usuarioAvaliadorRepository.findById(avaliadorId)
+    public Avaliacao criarAvaliacao(Long usuarioId, Long localId, int nota) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new IllegalArgumentException("Avaliador não encontrado"));
 
         Local local = localRepository.findById(localId)
@@ -34,7 +34,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
         }
 
         Avaliacao avaliacao = new Avaliacao();
-        avaliacao.setUsuario(avaliador);
+        avaliacao.setUsuario(usuario);
         avaliacao.setLocal(local);
         avaliacao.setNota(nota);
 

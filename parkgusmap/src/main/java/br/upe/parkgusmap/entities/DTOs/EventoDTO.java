@@ -1,6 +1,7 @@
 package br.upe.parkgusmap.entities.DTOs;
 
 import br.upe.parkgusmap.entities.Evento;
+import br.upe.parkgusmap.entities.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class EventoDTO {
     private String endereco;
     private List<String> imagens;
     private Long localId;
-    private Long adminId;
+    private List<Long> administradoresIds;
 
    public EventoDTO(Evento evento) {
         this.id = evento.getId();
@@ -33,6 +35,9 @@ public class EventoDTO {
         this.endereco = evento.getEndereco();
         this.imagens = evento.getImagens();
         this.localId = evento.getLocal().getId();
-        this.adminId = evento.getAdministrador().getId();
-    }
+       this.administradoresIds = evento.getAdministradores()
+               .stream()
+               .map(Usuario::getId)
+               .toList();
+   }
 }

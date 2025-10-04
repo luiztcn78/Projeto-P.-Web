@@ -22,7 +22,7 @@ public class Comentario {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_avaliador_id")
-    private UsuarioAvaliador usuario;
+    private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")

@@ -55,7 +55,11 @@ public class Local {
     @JsonIgnore
     private List<Evento> eventos = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "administrador_id", nullable = false)
-    private UsuarioAdministrador administrador;
+    @ManyToMany
+    @JoinTable(
+            name = "local_administradores",
+            joinColumns = @JoinColumn(name = "local_id"),
+            inverseJoinColumns = @JoinColumn(name = "administrador_id")
+    )
+    private List<Usuario> administradores = new ArrayList<>();
 }

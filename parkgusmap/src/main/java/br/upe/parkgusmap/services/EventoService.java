@@ -20,17 +20,16 @@ public interface EventoService {
     
     List<Evento> findByLocalId(Long localId);
     
-    List<Evento> findByAdministradorId(Long administradorId);
+    List<Evento> findByAdministradorId(Long usuarioId);
     
     List<Evento> findByPeriodo(LocalDateTime inicio, LocalDateTime fim);
     
     List<Evento> findEventosFuturos();
     
-    List<Evento> findByAvaliadorId(Long avaliadorId);
+    Evento addAdministradorToEvento(Long eventoId, Long usuarioId);
     
-    Evento addAvaliadorToEvento(Long eventoId, Long avaliadorId);
-    
-    Evento removeAvaliadorFromEvento(Long eventoId, Long avaliadorId);
+    Evento removeAdministradorFromEvento(Long eventoId, Long usuarioId);
 
     Evento eventoDTOToEvento(EventoDTO eventoDTO);
+
 }

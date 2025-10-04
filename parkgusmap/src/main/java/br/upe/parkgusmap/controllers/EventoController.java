@@ -39,16 +39,6 @@ public class EventoController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    @GetMapping("/user/{avaliadorId}")
-    public ResponseEntity<List<Evento>> buscarEventosParticipados(@PathVariable Long avaliadorId){
-        List<Evento> eventos = eventoService.findByAvaliadorId(avaliadorId);
-
-        if(eventos != null){
-            return ResponseEntity.ok(eventos);
-        }
-        return ResponseEntity.status(404).body(null);
-    }
-
     @GetMapping("/local/{localId}")
     public ResponseEntity<List<Evento>> buscarEventosLocal(@PathVariable Long localId){
         List<Evento> eventos = eventoService.findByLocalId(localId);

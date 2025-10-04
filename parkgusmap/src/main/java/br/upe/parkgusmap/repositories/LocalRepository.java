@@ -19,4 +19,7 @@ public interface LocalRepository extends JpaRepository<Local, Long> {
     
     @Query("SELECT l FROM Local l WHERE LOWER(l.nome) LIKE LOWER(CONCAT('%', :termo, '%')) OR LOWER(l.endereco) LIKE LOWER(CONCAT('%', :termo, '%'))")
     List<Local> findByNomeOrEnderecoContaining(@Param("termo") String termo);
+
+    @Query("SELECT l FROM Local l JOIN l.administradores a WHERE a.id = :usuarioId")
+    List<Local> findByAdministrador(@Param("usuarioId") Long usuarioId);
 }

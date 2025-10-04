@@ -2,6 +2,8 @@ package br.upe.parkgusmap.controllers;
 
 import br.upe.parkgusmap.entities.DTOs.LocalDTO;
 import br.upe.parkgusmap.entities.Local;
+import br.upe.parkgusmap.entities.Usuario;
+import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.LocalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class LocalController {
 
     private final LocalService localService;
+    private final UsuarioRepository usuarioRepository;
 
     @GetMapping
     public List<LocalDTO> getAllLocais() {
@@ -61,9 +64,9 @@ public class LocalController {
         }
     }
 
-    @GetMapping("/administrador/{administradorId}")
-    public List<LocalDTO> getLocaisByAdministrador(@PathVariable Long administradorId) {
-        return localService.findByAdministradorId(administradorId).stream()
+    @GetMapping("/administrador/{usuarioId}")
+    public List<LocalDTO> getLocaisByAdministrador(@PathVariable Long usuarioId) {
+        return localService.findByAdministradorId(usuarioId).stream()
                 .map(LocalDTO::new)
                 .collect(Collectors.toList());
     }
@@ -98,6 +101,24 @@ public class LocalController {
         local.setInformacoes(localDTO.getInformacoes());
         local.setImagens(localDTO.getImagens());
         local.setEspecificacoes(localDTO.getEspecificacoes());
+
+        if (localDTO.getAdministradoresIds() != null && !localDTO.getAdministradoresIds().isEmpty()) {
+            List<Usuario> admins = usuarioRepository.findAllById(localDTO.getAdministradoresIds());
+            local.setAdministradores(admins);
+        }
+
         return local;
+    }
+
+    @PostMapping("/{localId}/administradores/{usuarioId}")
+    public ResponseEntity<LocalDTO> addAdministrador(@PathVariable Long localId, @PathVariable Long usuarioId) {
+        Local updatedLocal = localService.addAdministradorToLocal(localId, usuarioId);
+        return ResponseEntity.ok(new LocalDTO(updatedLocal));
+    }
+
+    @DeleteMapping("/{localId}/administradores/{usuarioId}")
+    public ResponseEntity<LocalDTO> removeAdministrador(@PathVariable Long localId, @PathVariable Long usuarioId) {
+        Local updatedLocal = localService.removeAdministradorFromLocal(localId, usuarioId);
+        return ResponseEntity.ok(new LocalDTO(updatedLocal));
     }
 }

@@ -19,7 +19,13 @@ public class AvaliacaoDTO {
     private Long localId;
 
     public AvaliacaoDTO(Avaliacao avaliacao) {
-        this.id = avaliacao.getId();
-        this.nota = avaliacao.getNota();
+            this.id = avaliacao.getId();
+            this.nota = avaliacao.getNota();
+            if(avaliacao.getUsuario() != null) {
+                this.usuarioId = avaliacao.getUsuario().getId();
+            }
+            if(avaliacao.getLocal() != null) {
+                this.localId = avaliacao.getLocal().getId();
+            }
     }
 }

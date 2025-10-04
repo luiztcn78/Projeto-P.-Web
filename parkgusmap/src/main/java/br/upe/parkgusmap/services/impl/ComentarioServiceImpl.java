@@ -2,12 +2,13 @@ package br.upe.parkgusmap.services.impl;
 
 import br.upe.parkgusmap.entities.Comentario;
 import br.upe.parkgusmap.entities.Local;
-import br.upe.parkgusmap.entities.UsuarioAvaliador;
+import br.upe.parkgusmap.entities.Usuario;
 import br.upe.parkgusmap.repositories.ComentarioRepository;
 import br.upe.parkgusmap.repositories.LocalRepository;
-import br.upe.parkgusmap.repositories.UsuarioAvaliadorRepository;
+import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.ComentarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,14 +18,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ComentarioServiceImpl implements ComentarioService {
 
+    @Autowired
     private final ComentarioRepository comentarioRepository;
-    private final UsuarioAvaliadorRepository usuarioAvaliadorRepository;
+    private final UsuarioRepository usuarioRepository;
     private final LocalRepository localRepository;
 
     @Override
-    public Comentario criarComentario(Long avaliadorId, Long localId, String texto) {
-        UsuarioAvaliador avaliador = usuarioAvaliadorRepository.findById(avaliadorId)
-                .orElseThrow(() -> new IllegalArgumentException("Avaliador não encontrado"));
+    public Comentario criarComentario(Long usuarioId, Long localId, String texto) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
         Local local = localRepository.findById(localId)
                 .orElseThrow(() -> new IllegalArgumentException("Local não encontrado"));
@@ -34,7 +36,7 @@ public class ComentarioServiceImpl implements ComentarioService {
         }
 
         Comentario comentario = new Comentario();
-        comentario.setUsuario(avaliador);
+        comentario.setUsuario(usuario);
         comentario.setLocal(local);
         comentario.setTexto(texto);
 

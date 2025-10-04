@@ -46,15 +46,11 @@ public class Evento {
     @JoinColumn(name = "local_id", nullable = false)
     private Local local;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "administrador_id", nullable = false)
-    private UsuarioAdministrador administrador;
-
     @ManyToMany
     @JoinTable(
-        name = "evento_avaliadores",
-        joinColumns = @JoinColumn(name = "evento_id"),
-        inverseJoinColumns = @JoinColumn(name = "avaliador_id")
+            name = "evento_administradores",
+            joinColumns = @JoinColumn(name = "evento_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id")
     )
-    private List<UsuarioAvaliador> avaliadores = new ArrayList<>();
+    private List<Usuario> administradores = new ArrayList<>();
 }
