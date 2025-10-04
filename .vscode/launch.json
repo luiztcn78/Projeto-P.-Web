@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ParkgusmapApplication<parkgusmap>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "br.upe.parkgusmap.ParkgusmapApplication",
+            "projectName": "parkgusmap",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
