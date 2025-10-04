@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioAvaliadorController {
 
 
-    //implementar o dto
+
     @Autowired
     private UsuarioAvaliadorService usuarioAvaliadorService;
 

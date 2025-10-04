@@ -2,6 +2,7 @@ package br.upe.parkgusmap.controllers;
 
 import br.upe.parkgusmap.entities.Avaliacao;
 import br.upe.parkgusmap.entities.Comentario;
+import br.upe.parkgusmap.entities.DTOs.AvaliacaoDTO;
 import br.upe.parkgusmap.services.AvaliacaoService;
 import br.upe.parkgusmap.services.ComentarioService;
 import lombok.RequiredArgsConstructor;
@@ -20,21 +21,24 @@ public class AvaliacaoComentarioController {
 
     // Endpoints para Avaliações
     @PostMapping("/avaliacoes")
-    public ResponseEntity<Avaliacao> criarAvaliacao(@RequestParam Long avaliadorId, 
-                                                   @RequestParam Long localId, 
-                                                   @RequestParam int nota) {
+    public ResponseEntity<AvaliacaoDTO> criarAvaliacao(@RequestParam Long avaliadorId,
+                                                       @RequestParam Long localId,
+                                                       @RequestParam int nota) {
         try {
             Avaliacao avaliacao = avaliacaoService.criarAvaliacao(avaliadorId, localId, nota);
-            return ResponseEntity.ok(avaliacao);
+            return ResponseEntity.ok(new AvaliacaoDTO(avaliacao));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/avaliacoes/usuario/{usuarioId}")
-    public ResponseEntity<List<Avaliacao>> getAvaliacoesPorUsuario(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<AvaliacaoDTO>> getAvaliacoesPorUsuario(@PathVariable Long usuarioId) {
         try {
-            List<Avaliacao> avaliacoes = avaliacaoService.findByUsuarioId(usuarioId);
+            List<AvaliacaoDTO> avaliacoes = avaliacaoService.findByUsuarioId(usuarioId)
+                    .stream()
+                    .map(AvaliacaoDTO::new) // converte entidade para DTO
+                    .toList();
             return ResponseEntity.ok(avaliacoes);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -42,9 +46,12 @@ public class AvaliacaoComentarioController {
     }
 
     @GetMapping("/avaliacoes/local/{localId}")
-    public ResponseEntity<List<Avaliacao>> getAvaliacoesPorLocal(@PathVariable Long localId) {
+    public ResponseEntity<List<AvaliacaoDTO>> getAvaliacoesPorLocal(@PathVariable Long localId) {
         try {
-            List<Avaliacao> avaliacoes = avaliacaoService.findByLocalId(localId);
+            List<AvaliacaoDTO> avaliacoes = avaliacaoService.findByLocalId(localId)
+                    .stream()
+                    .map(AvaliacaoDTO::new) // converte entidade para DTO
+                    .toList();
             return ResponseEntity.ok(avaliacoes);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -84,3 +91,4 @@ public class AvaliacaoComentarioController {
         }
     }
 }
+

@@ -24,7 +24,7 @@ public class EventoDTO {
     private Long localId;
     private Long adminId;
 
-    EventoDTO(Evento evento) {
+   public EventoDTO(Evento evento) {
         this.id = evento.getId();
         this.nome = evento.getNome();
         this.descricao = evento.getDescricao();
