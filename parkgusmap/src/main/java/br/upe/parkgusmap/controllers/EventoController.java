@@ -43,7 +43,7 @@ public class EventoController {
         if(eventos != null){
             return ResponseEntity.ok(eventos);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        return ResponseEntity.status(404).body(null);
     }
 
     @GetMapping("/local/{localId}")
@@ -52,7 +52,7 @@ public class EventoController {
         if(eventos != null){
             return ResponseEntity.ok(eventos);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        return ResponseEntity.status(404).body(null);
     }
 
 
