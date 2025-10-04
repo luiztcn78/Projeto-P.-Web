@@ -6,7 +6,6 @@ import br.upe.parkgusmap.entities.Usuario;
 import br.upe.parkgusmap.repositories.LocalRepository;
 import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.LocalService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +59,7 @@ public class LocalServiceImpl implements LocalService {
 
     @Override
     public List<Local> findByAdministradorId(Long usuarioId) {
-        return localRepository.findByAdministradorId(usuarioId);
+        return localRepository.findByAdministradoresId(usuarioId);
     }
 
     @Override

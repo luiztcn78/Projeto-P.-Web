@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface LocalRepository extends JpaRepository<Local, Long> {
     
-    List<Local> findByAdministradorId(Long administradorId);
+    List<Local> findByAdministradoresId(Long administradorId);
     
     List<Local> findByNomeContainingIgnoreCase(String nome);
     
