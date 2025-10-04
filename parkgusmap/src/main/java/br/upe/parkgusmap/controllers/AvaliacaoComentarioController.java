@@ -3,6 +3,7 @@ package br.upe.parkgusmap.controllers;
 import br.upe.parkgusmap.entities.Avaliacao;
 import br.upe.parkgusmap.entities.Comentario;
 import br.upe.parkgusmap.entities.DTOs.AvaliacaoDTO;
+import br.upe.parkgusmap.entities.DTOs.ComentarioDTO;
 import br.upe.parkgusmap.services.AvaliacaoService;
 import br.upe.parkgusmap.services.ComentarioService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/relacionamentos")
@@ -19,7 +21,6 @@ public class AvaliacaoComentarioController {
     private final AvaliacaoService avaliacaoService;
     private final ComentarioService comentarioService;
 
-    // Endpoints para Avaliações
     @PostMapping("/avaliacoes")
     public ResponseEntity<AvaliacaoDTO> criarAvaliacao(@RequestParam Long avaliadorId,
                                                        @RequestParam Long localId,
@@ -33,62 +34,48 @@ public class AvaliacaoComentarioController {
     }
 
     @GetMapping("/avaliacoes/usuario/{usuarioId}")
-    public ResponseEntity<List<AvaliacaoDTO>> getAvaliacoesPorUsuario(@PathVariable Long usuarioId) {
-        try {
-            List<AvaliacaoDTO> avaliacoes = avaliacaoService.findByUsuarioId(usuarioId)
-                    .stream()
-                    .map(AvaliacaoDTO::new) // converte entidade para DTO
-                    .toList();
-            return ResponseEntity.ok(avaliacoes);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public List<AvaliacaoDTO> getAvaliacoesPorUsuario(@PathVariable Long usuarioId) {
+        return avaliacaoService.findByUsuarioId(usuarioId)
+                .stream()
+                .map(AvaliacaoDTO::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/avaliacoes/local/{localId}")
-    public ResponseEntity<List<AvaliacaoDTO>> getAvaliacoesPorLocal(@PathVariable Long localId) {
-        try {
-            List<AvaliacaoDTO> avaliacoes = avaliacaoService.findByLocalId(localId)
-                    .stream()
-                    .map(AvaliacaoDTO::new) // converte entidade para DTO
-                    .toList();
-            return ResponseEntity.ok(avaliacoes);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public List<AvaliacaoDTO> getAvaliacoesPorLocal(@PathVariable Long localId) {
+        return avaliacaoService.findByLocalId(localId)
+                .stream()
+                .map(AvaliacaoDTO::new)
+                .collect(Collectors.toList());
     }
 
-    // Endpoints para Comentários
     @PostMapping("/comentarios")
-    public ResponseEntity<Comentario> criarComentario(@RequestParam Long avaliadorId, 
-                                                     @RequestParam Long localId, 
-                                                     @RequestParam String texto) {
+    public ResponseEntity<ComentarioDTO> criarComentario(@RequestBody ComentarioDTO comentarioDTO) {
         try {
-            Comentario comentario = comentarioService.criarComentario(avaliadorId, localId, texto);
-            return ResponseEntity.ok(comentario);
+            Comentario comentario = comentarioService.criarComentario(
+                comentarioDTO.getUsuarioId(), 
+                comentarioDTO.getLocalId(), 
+                comentarioDTO.getTexto()
+            );
+            return ResponseEntity.ok(new ComentarioDTO(comentario));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/comentarios/usuario/{usuarioId}")
-    public ResponseEntity<List<Comentario>> getComentariosPorUsuario(@PathVariable Long usuarioId) {
-        try {
-            List<Comentario> comentarios = comentarioService.findByUsuarioId(usuarioId);
-            return ResponseEntity.ok(comentarios);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public List<ComentarioDTO> getComentariosPorUsuario(@PathVariable Long usuarioId) {
+        return comentarioService.findByUsuarioId(usuarioId)
+                .stream()
+                .map(ComentarioDTO::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/comentarios/local/{localId}")
-    public ResponseEntity<List<Comentario>> getComentariosPorLocal(@PathVariable Long localId) {
-        try {
-            List<Comentario> comentarios = comentarioService.findByLocalId(localId);
-            return ResponseEntity.ok(comentarios);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public List<ComentarioDTO> getComentariosPorLocal(@PathVariable Long localId) {
+        return comentarioService.findByLocalId(localId)
+                .stream()
+                .map(ComentarioDTO::new)
+                .collect(Collectors.toList());
     }
 }
-
