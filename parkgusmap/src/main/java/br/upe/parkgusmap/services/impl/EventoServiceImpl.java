@@ -1,10 +1,13 @@
 package br.upe.parkgusmap.services.impl;
 
+import br.upe.parkgusmap.entities.DTOs.EventoDTO;
 import br.upe.parkgusmap.entities.Evento;
 import br.upe.parkgusmap.entities.UsuarioAvaliador;
 import br.upe.parkgusmap.repositories.EventoRepository;
 import br.upe.parkgusmap.repositories.UsuarioAvaliadorRepository;
 import br.upe.parkgusmap.services.EventoService;
+import br.upe.parkgusmap.services.LocalService;
+import br.upe.parkgusmap.services.UsuarioAdministradorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -103,5 +106,24 @@ public class EventoServiceImpl implements EventoService {
         
         evento.getAvaliadores().remove(avaliador);
         return eventoRepository.save(evento);
+    }
+
+    @Override
+    public Evento eventoDTOToEvento(EventoDTO eventoDTO) {
+        UsuarioAdministradorService admService = new UsuarioAdministradorImpl();
+        LocalService localservice = new LocalServiceImpl();
+        Evento evento = new Evento();
+
+        evento.setId(eventoDTO.getId());
+        evento.setAdministrador(admService.buscarUsuarioAdministradorPorId(eventoDTO.getAdminId()));
+        evento.setDataHoraFim(eventoDTO.getDataFim());
+        evento.setEndereco(eventoDTO.getEndereco());
+        evento.setNome(eventoDTO.getNome());
+        evento.setDataHoraInicio(eventoDTO.getDataInicio());
+        evento.setLocal(localservice.buscarLocalPorId(eventoDTO.getLocalId()));
+        evento.setImagens(eventoDTO.getImagens());
+        evento.setDescricao(eventoDTO.getDescricao());
+
+        return evento;
     }
 }

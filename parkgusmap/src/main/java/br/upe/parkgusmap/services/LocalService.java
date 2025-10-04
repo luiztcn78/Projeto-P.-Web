@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LocalService {
-    
+
+    Local buscarLocalPorId(Long id);
+
     List<Local> findAll();
     
     Optional<Local> findById(Long id);

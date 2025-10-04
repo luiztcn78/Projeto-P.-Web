@@ -4,16 +4,23 @@ import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.repositories.LocalRepository;
 import br.upe.parkgusmap.services.LocalService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class LocalServiceImpl implements LocalService {
 
-    private final LocalRepository localRepository;
+    @Autowired
+    private LocalRepository localRepository;
+
+
+    @Override
+    public Local buscarLocalPorId(Long id) {
+        return localRepository.findById(id).orElse(null);
+    }
 
     @Override
     public List<Local> findAll() {

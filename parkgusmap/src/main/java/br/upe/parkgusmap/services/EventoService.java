@@ -1,5 +1,6 @@
 package br.upe.parkgusmap.services;
 
+import br.upe.parkgusmap.entities.DTOs.EventoDTO;
 import br.upe.parkgusmap.entities.Evento;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,4 +31,6 @@ public interface EventoService {
     Evento addAvaliadorToEvento(Long eventoId, Long avaliadorId);
     
     Evento removeAvaliadorFromEvento(Long eventoId, Long avaliadorId);
+
+    Evento eventoDTOToEvento(EventoDTO eventoDTO);
 }

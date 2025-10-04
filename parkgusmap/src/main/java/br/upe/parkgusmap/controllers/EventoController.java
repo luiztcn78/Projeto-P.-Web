@@ -1,5 +1,6 @@
 package br.upe.parkgusmap.controllers;
 
+import br.upe.parkgusmap.entities.DTOs.EventoDTO;
 import br.upe.parkgusmap.entities.Evento;
 import br.upe.parkgusmap.services.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ public class EventoController {
     private EventoService eventoService;
 
     @PostMapping
-    public ResponseEntity<Evento> registrarEvento(@RequestBody Evento evento){
+    public ResponseEntity<Evento> registrarEvento(@RequestBody EventoDTO eventodto){
+        
         Evento eventoResgistro = eventoService.registrarEvento(evento);
 
         if(eventoResgistro != null){
