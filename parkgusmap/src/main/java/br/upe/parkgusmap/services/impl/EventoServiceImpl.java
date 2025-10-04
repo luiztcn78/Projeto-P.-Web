@@ -30,10 +30,11 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Evento save(Evento evento) {
+    public Evento registrarEvento(Evento evento) {
         return eventoRepository.save(evento);
     }
 
+    //o que isso faz?
     @Override
     public Evento update(Long id, Evento evento) {
         if (!eventoRepository.existsById(id)) {

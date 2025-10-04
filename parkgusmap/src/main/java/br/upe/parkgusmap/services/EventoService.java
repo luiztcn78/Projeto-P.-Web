@@ -11,7 +11,7 @@ public interface EventoService {
     
     Optional<Evento> findById(Long id);
     
-    Evento save(Evento evento);
+    Evento registrarEvento(Evento evento);
     
     Evento update(Long id, Evento evento);
     
