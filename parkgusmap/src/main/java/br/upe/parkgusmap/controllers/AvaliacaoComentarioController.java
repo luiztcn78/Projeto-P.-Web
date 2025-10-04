@@ -33,9 +33,12 @@ public class AvaliacaoComentarioController {
     }
 
     @GetMapping("/avaliacoes/usuario/{usuarioId}")
-    public ResponseEntity<List<Avaliacao>> getAvaliacoesPorUsuario(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<AvaliacaoDTO>> getAvaliacoesPorUsuario(@PathVariable Long usuarioId) {
         try {
-            List<Avaliacao> avaliacoes = avaliacaoService.findByUsuarioId(usuarioId);
+            List<AvaliacaoDTO> avaliacoes = avaliacaoService.findByUsuarioId(usuarioId)
+                    .stream()
+                    .map(AvaliacaoDTO::new) // converte entidade para DTO
+                    .toList();
             return ResponseEntity.ok(avaliacoes);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -43,9 +46,12 @@ public class AvaliacaoComentarioController {
     }
 
     @GetMapping("/avaliacoes/local/{localId}")
-    public ResponseEntity<List<Avaliacao>> getAvaliacoesPorLocal(@PathVariable Long localId) {
+    public ResponseEntity<List<AvaliacaoDTO>> getAvaliacoesPorLocal(@PathVariable Long localId) {
         try {
-            List<Avaliacao> avaliacoes = avaliacaoService.findByLocalId(localId);
+            List<AvaliacaoDTO> avaliacoes = avaliacaoService.findByLocalId(localId)
+                    .stream()
+                    .map(AvaliacaoDTO::new) // converte entidade para DTO
+                    .toList();
             return ResponseEntity.ok(avaliacoes);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
