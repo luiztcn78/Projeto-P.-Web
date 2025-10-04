@@ -2,6 +2,7 @@ package br.upe.parkgusmap.controllers;
 
 import br.upe.parkgusmap.entities.Avaliacao;
 import br.upe.parkgusmap.entities.Comentario;
+import br.upe.parkgusmap.entities.DTOs.AvaliacaoDTO;
 import br.upe.parkgusmap.services.AvaliacaoService;
 import br.upe.parkgusmap.services.ComentarioService;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,12 @@ public class AvaliacaoComentarioController {
 
     // Endpoints para Avaliações
     @PostMapping("/avaliacoes")
-    public ResponseEntity<Avaliacao> criarAvaliacao(@RequestParam Long avaliadorId, 
-                                                   @RequestParam Long localId, 
-                                                   @RequestParam int nota) {
+    public ResponseEntity<AvaliacaoDTO> criarAvaliacao(@RequestParam Long avaliadorId,
+                                                       @RequestParam Long localId,
+                                                       @RequestParam int nota) {
         try {
             Avaliacao avaliacao = avaliacaoService.criarAvaliacao(avaliadorId, localId, nota);
-            return ResponseEntity.ok(avaliacao);
+            return ResponseEntity.ok(new AvaliacaoDTO(avaliacao));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -84,3 +85,4 @@ public class AvaliacaoComentarioController {
         }
     }
 }
+
