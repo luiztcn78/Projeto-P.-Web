@@ -2,6 +2,8 @@ package br.upe.parkgusmap.services;
 
 import br.upe.parkgusmap.entities.DTOs.EventoDTO;
 import br.upe.parkgusmap.entities.Evento;
+import br.upe.parkgusmap.entities.Usuario;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,5 +33,7 @@ public interface EventoService {
     Evento removeAdministradorFromEvento(Long eventoId, Long usuarioId);
 
     Evento eventoDTOToEvento(EventoDTO eventoDTO);
+
+    Evento alterarDescricaoEvento(Long eventoId, String novaDescricao, Long usuarioId);
 
 }

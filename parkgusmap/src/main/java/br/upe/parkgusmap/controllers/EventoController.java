@@ -48,5 +48,14 @@ public class EventoController {
         return ResponseEntity.status(404).body(null);
     }
 
+    @PutMapping("/{eventoId}/descricao")
+    public ResponseEntity<Evento> alterarDescricao(
+            @PathVariable Long eventoId,
+            @RequestParam String novaDescricao,
+            @RequestParam Long usuarioId) {
+
+        Evento evento = eventoService.alterarDescricaoEvento(eventoId, novaDescricao, usuarioId);
+        return ResponseEntity.ok(evento);
+    }
 
 }
