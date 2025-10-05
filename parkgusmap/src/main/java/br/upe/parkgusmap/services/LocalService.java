@@ -1,5 +1,6 @@
 package br.upe.parkgusmap.services;
 
+import br.upe.parkgusmap.entities.Evento;
 import br.upe.parkgusmap.entities.Local;
 import java.util.List;
 import java.util.Optional;
@@ -29,4 +30,6 @@ public interface LocalService {
     Local addAdministradorToLocal(Long localId, Long usuarioId);
 
     Local removeAdministradorFromLocal(Long localId, Long usuarioId);
+
+    Local alterarDescricaoLocal(Long eventoId, String novaDescricao, Long usuarioId);
 }
