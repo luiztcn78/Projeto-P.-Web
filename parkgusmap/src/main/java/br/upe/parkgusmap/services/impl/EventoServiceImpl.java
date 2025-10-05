@@ -129,4 +129,28 @@ public class EventoServiceImpl implements EventoService {
 
         return evento;
     }
+
+    @Override
+    public Evento alterarDescricaoEvento(Long eventoId, String novaDescricao, Long usuarioId) {
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (usuario.getPerfil() != Perfil.ADMINISTRADOR) {
+            throw new RuntimeException("Apenas administradores podem alterar a descrição do evento");
+        }
+
+        Evento evento = eventoRepository.findById(eventoId)
+                .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
+
+        // aalterando a descrição
+        evento.setDescricao(novaDescricao);
+
+        return eventoRepository.save(evento);
+
+        //acho que não faz sentido
+
+    }
+
+
 }

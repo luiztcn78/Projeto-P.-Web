@@ -17,28 +17,59 @@
 ## 2. Fase 1 – Git Flow
 ### 2.1 Features - Quais features foram criadas?   
 - Liste as branches de features e descreva as alterações.:
-  - Feature/DTOEvento: Feature utilizada para a criação e configuração do DTO da entidade Evento;
-  - Feature/EventoControler: Feature utilizada para a criação do Controller da entidade Evento e depois para a implementação do DTO no controller;
-- 
+```Feature/DTOEvento: Feature utilizada para a criação e configuração do DTO da entidade Evento;```
+```Feature/EventoControler: Feature utilizada para a criação do Controller da entidade Evento e depois para a implementação do DTO no controller;```
+```feature/dto-avaliaco Feature utilizada para a criação do DTO da classe Avaliacao e depois para a implementação do DTO no controller;```
+```feature/usuario-class-and-usuario-dto: Feature utilizada para criar a classe unificada Usuario e seus DTO, pensando na mudança de comportamento do Usuario que viria a ser feita;```
 - Prints dos commits:
 <img src="imagens/featuresVini.png">
 <img src="imagens/featuresVini2.png">
+<img src="imagens/Commits-Feature-Avaliacao.png">
+<img src="imagens/Commits-Feature-Usuario.png">
 ### 2.2 Conflitos - Onde ocorreram conflitos (arquivos/linhas)?   
 - Como os conflitos foram resolvidos?   
 - Inclua prints mostrando os marcadores (`<<<<<<<`, `=======`, `>>>>>>>`) e o
 arquivo final após resolução.
 ### 2.3 Release - Criada branch `release/2.0`?   
-- Alterações preparatórias (ex.: versão, documentação).   
-- Integração com `main` e geração da tag `v2.0`.
-### 2.4 Hotfix - Qual foi o problema corrigido?   
+- Alterações preparatórias:
+```Finalização e integração das branchs features com develop```
+```Merge da main com develop```
+  ```Integração com `main e geração da tag v0.2```
+- 
+### 2.4 Hotfix - Qual foi o problema corrigido?
+```O problema identificado foi a duplicidade de classes de usuário no sistema. Existiam duas entidades distintas (Admin e Avaliador), o que gerava complexidade desnecessária no código e duplicação de lógica.```
+```O hotfix consistiu em unificar essas duas classes em uma única classe Usuario, utilizando um enum para diferenciar os papéis de cada tipo de usuário (ex.: ADMIN, AVALIADOR).```
+- 
+```Essa alteração exigiu uma revisão geral no sistema, com a atualização de serviços, DTOs e controladores que anteriormente dependiam das duas classes separadas, para que passassem a trabalhar com a nova estrutura unificada.```
+
 - Como foi feito o merge do hotfix em `main` e `develop`?   
-- Inclua prints e comandos usados.
+```Após a conclusão do hotfix, foi feito o merge com a branch main e develop```
+- 
+Prints e comandos usados:
+```Criação da branch: hotfix/2.0.1/ManutencaoComportamentoUsuariosnoSistema a partir da main feita pelo GitHub```
+- 
+- Commits: UPD: UsuarioAdministrador e Usuariovaliador -> para Usuario (Enums) - Modificando o comportamento do sistema
+<img src="imagens/Commits-HotFix.png">
+- 
+- Merge com a main:
+```git checkout main ```
+```git pull origin main```
+```git merge hotfix/2.0.1/ManutencaoComportamentoUsuariosnoSistema```
+```git push origin main```
+- 
+-Merge com a develop:
+```git checkout develop```
+```git pull origin develop```
+```git merge hotfix/2.0.1/ManutencaoComportamentoUsuariosnoSistema```
+```git push origin develop```
 ### 2.5 Uso de Rebase - Em qual feature aplicaram `git rebase`?   
-- Explique o que mudou no histórico.
+```Não foi usado o git rebase para integração de features com develop```
 ##   
 3. Fase 2 – Trunk-Based Development
-### 3.1 Branches Curtos - Quais branches foram criados a partir de `main`?   
-- Quantos commits cada um teve?
+### 3.1 Branches Curtos - Quais branches foram criados a partir de `main`? 
+```Branch: UpdateUsuario / 2 commits```
+```Branch: trunkbased/UpdServiceeIMPLEvento / 2 commits```
+- 
 ### 3.2 Squash - Qual merge foi feito usando **squash**?   
 - Explique por que foi escolhido squash em vez de merge normal.
 ### 3.3 Tag Final - Tag criada: `v3.0`.

@@ -48,23 +48,14 @@ public class EventoController {
         return ResponseEntity.status(404).body(null);
     }
 
-    @DeleteMapping("/{eventoId}")
-    public ResponseEntity<Evento> removerEvento(@PathVariable Long eventoId){
-        try{
-            eventoService.deleteById(eventoId);
-        }
-        catch(Exception e){
-            return ResponseEntity.status(404).body(null);
-        }
-        return ResponseEntity.status(200).body(null);
+    @PutMapping("/{eventoId}/descricao")
+    public ResponseEntity<Evento> alterarDescricao(
+            @PathVariable Long eventoId,
+            @RequestParam String novaDescricao,
+            @RequestParam Long usuarioId) {
+
+        Evento evento = eventoService.alterarDescricaoEvento(eventoId, novaDescricao, usuarioId);
+        return ResponseEntity.ok(evento);
     }
 
-    @GetMapping("/Atuais")
-    public ResponseEntity<List<Evento>> buscarEventosAtuais(){
-        List<Evento> eventos = eventoService.findEventosFuturos();
-        if(eventos != null){
-            return ResponseEntity.ok(eventos);
-        }
-        return ResponseEntity.status(404).body(null);
-    }
 }

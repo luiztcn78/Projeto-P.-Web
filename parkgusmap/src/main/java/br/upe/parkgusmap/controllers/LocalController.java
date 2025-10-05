@@ -1,6 +1,7 @@
 package br.upe.parkgusmap.controllers;
 
 import br.upe.parkgusmap.entities.DTOs.LocalDTO;
+import br.upe.parkgusmap.entities.Evento;
 import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.Usuario;
 import br.upe.parkgusmap.repositories.UsuarioRepository;
@@ -120,5 +121,15 @@ public class LocalController {
     public ResponseEntity<LocalDTO> removeAdministrador(@PathVariable Long localId, @PathVariable Long usuarioId) {
         Local updatedLocal = localService.removeAdministradorFromLocal(localId, usuarioId);
         return ResponseEntity.ok(new LocalDTO(updatedLocal));
+    }
+
+    @PutMapping("/{localId}/descricao")
+    public ResponseEntity<Local> alterarDescricao(
+            @PathVariable Long eventoId,
+            @RequestParam String novaDescricao,
+            @RequestParam Long usuarioId) {
+
+        Local local = localService.alterarDescricaoLocal(eventoId, novaDescricao, usuarioId);
+        return ResponseEntity.ok(local);
     }
 }

@@ -1,6 +1,7 @@
 package br.upe.parkgusmap.services.impl;
 
 import br.upe.parkgusmap.entities.Enums.Perfil;
+import br.upe.parkgusmap.entities.Evento;
 import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.Usuario;
 import br.upe.parkgusmap.repositories.LocalRepository;
@@ -107,6 +108,25 @@ public class LocalServiceImpl implements LocalService {
 
         local.getAdministradores().remove(usuario);
         return localRepository.save(local);
+    }
+
+    @Override
+    public Local alterarDescricaoLocal(Long eventoId, String novaDescricao, Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (usuario.getPerfil() != Perfil.ADMINISTRADOR) {
+            throw new RuntimeException("Apenas administradores podem alterar a descrição do evento");
+        }
+
+        Local local = localRepository.findById(eventoId)
+                .orElseThrow(() -> new RuntimeException("Local não encontrado"));
+
+        // aalterando a descrição
+        local.setDescricao(novaDescricao);
+
+        return localRepository.save(local);
+
     }
 
 
