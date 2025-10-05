@@ -68,5 +68,13 @@ public class EventoController {
         }
         return ResponseEntity.status(200).body(null);
     }
-    
+
+    @GetMapping("/Atuais")
+    public ResponseEntity<List<Evento>> buscarEventosAtuais(){
+        List<Evento> eventos = eventoService.findEventosFuturos();
+        if(eventos != null){
+            return ResponseEntity.ok(eventos);
+        }
+        return ResponseEntity.status(404).body(null);
+    }
 }
