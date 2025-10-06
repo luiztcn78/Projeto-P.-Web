@@ -14,6 +14,7 @@
 - Descreva como foi feita a configuração inicial (comandos usados e prints).
 ``` Após a criação do repositório, foram adicionados os arquivos: README.md e LICENSE.txt, utilizando os comandos: "git init", "git remote",  "git add" e "git push", comandos que foram utilizados um tempo depois para a adição dos primeiros códigos do projeto.```
 <img src="imagens/InicioCmt.png">
+
 ## 2. Fase 1 – Git Flow
 ### 2.1 Features - Quais features foram criadas?   
 - Liste as branches de features e descreva as alterações.:
@@ -21,15 +22,36 @@
 ```Feature/EventoControler: Feature utilizada para a criação do Controller da entidade Evento e depois para a implementação do DTO no controller;```
 ```feature/dto-avaliaco Feature utilizada para a criação do DTO da classe Avaliacao e depois para a implementação do DTO no controller;```
 ```feature/usuario-class-and-usuario-dto: Feature utilizada para criar a classe unificada Usuario e seus DTO, pensando na mudança de comportamento do Usuario que viria a ser feita;```
+```feature/dto-comentario: Feature utilizada para a criação e estruturação do DTO da entidade Comentario, implementando os padrões de transferência de dados para a funcionalidade de comentários no sistema;    ```
+```feature/dto-local: Feature utilizada para a criação do DTO da entidade Local, definindo os atributos principais e estrutura de dados para transferência das informações de locais entre as camadas da aplicação;   ```
 - Prints dos commits:
 <img src="imagens/featuresVini.png">
 <img src="imagens/featuresVini2.png">
 <img src="imagens/Commits-Feature-Avaliacao.png">
 <img src="imagens/Commits-Feature-Usuario.png">
+<img src="imagens/print1-luiz.png">
+<img src="imagens/print2-luiz.png">
+
 ### 2.2 Conflitos - Onde ocorreram conflitos (arquivos/linhas)?   
-- Como os conflitos foram resolvidos?   
+- Como os conflitos foram resolvidos? 
+```Análise manual de cada bloco de conflito```
+```Preservação de ambas as dependências no pom.xml quando compatíveis```
+```Unificação para a nova estrutura Usuario em vez das classes separadas```
+```Manutenção da funcionalidade de todos os controllers envolvidos```
+```Testes de integração para verificar que o sistema funcionava após o merge```
+
 - Inclua prints mostrando os marcadores (`<<<<<<<`, `=======`, `>>>>>>>`) e o
 arquivo final após resolução.
+```prints conflitos```
+<img src="imagens/conflito1.png">
+<img src="imagens/conflito2.png">
+<img src="imagens/conflito3.png">
+<img src="imagens/conflito4.png">
+
+```arquivo finalizado com solução```
+<img src="imagens/printfinal1.png">
+<img src="imagens/printfinal2.png">
+
 ### 2.3 Release - Criada branch `release/2.0`?   
 - Alterações preparatórias:
 ```Finalização e integração das branchs features com develop```
@@ -63,15 +85,20 @@ arquivo final após resolução.
 ```git push origin develop```
 ### 2.5 Uso de Rebase - Em qual feature aplicaram `git rebase`?   
 ```Não foi usado o git rebase para integração de features com develop```
+
 ## 3. Fase 2 – Trunk-Based Development
 ### 3.1 Branches Curtos - Quais branches foram criados a partir de `main`? 
 ```Branch: UpdateUsuario / 2 commits```
 ```Branch: trunkbased/UpdServiceeIMPLEvento / 2 commits```
 ```Branch: feature/UpdateUsuario / 2 commits```
 ```Branch: feature/Evento / 2 commits```
+```Branch: feature/validacao-localdto / 2 commits```
+```Branch: feature/validacao-eventodto / 2 commits```
+
 ### 3.2 Squash - Qual merge foi feito usando **squash**?   
 - Explique por que foi escolhido squash em vez de merge normal.:
 ```Foi utilizado o squash na feature UpdateUsuario. Isto foi feito pois as alterações feitas foram mínimas e a abstração do squash ajudou a deixar o histórico mais limpo e condensado no commit "RESOLVED: Erro de inicialização / ADD: Relatorio.md".```
+```O squash foi utilizado na branch feature/validacao-localdto porque as validações implementadas no LocalDTO representavam uma funcionalidade coesa e bem definida - a adição de anotações de validação Jakarta Bean Validation (@NotBlank, @Size, @NotNull).```
 ### 3.3 Tag Final - Tag criada: `v3.0`.
 - Prints do histórico.:
 <img src="imagens/historicov0.3.png">
