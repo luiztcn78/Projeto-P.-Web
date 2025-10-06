@@ -34,48 +34,55 @@ arquivo final após resolução.
 - Alterações preparatórias:
 ```Finalização e integração das branchs features com develop```
 ```Merge da main com develop```
-  ```Integração com `main e geração da tag v0.2```
-- 
+```Integração com `main e geração da tag v0.2```
+
 ### 2.4 Hotfix - Qual foi o problema corrigido?
 ```O problema identificado foi a duplicidade de classes de usuário no sistema. Existiam duas entidades distintas (Admin e Avaliador), o que gerava complexidade desnecessária no código e duplicação de lógica.```
 ```O hotfix consistiu em unificar essas duas classes em uma única classe Usuario, utilizando um enum para diferenciar os papéis de cada tipo de usuário (ex.: ADMIN, AVALIADOR).```
-- 
 ```Essa alteração exigiu uma revisão geral no sistema, com a atualização de serviços, DTOs e controladores que anteriormente dependiam das duas classes separadas, para que passassem a trabalhar com a nova estrutura unificada.```
 
 - Como foi feito o merge do hotfix em `main` e `develop`?   
 ```Após a conclusão do hotfix, foi feito o merge com a branch main e develop```
-- 
-Prints e comandos usados:
+
+- Prints e comandos usados:
 ```Criação da branch: hotfix/2.0.1/ManutencaoComportamentoUsuariosnoSistema a partir da main feita pelo GitHub```
-- 
+
 - Commits: UPD: UsuarioAdministrador e Usuariovaliador -> para Usuario (Enums) - Modificando o comportamento do sistema
 <img src="imagens/Commits-HotFix.png">
-- 
+
 - Merge com a main:
 ```git checkout main ```
 ```git pull origin main```
 ```git merge hotfix/2.0.1/ManutencaoComportamentoUsuariosnoSistema```
 ```git push origin main```
-- 
--Merge com a develop:
+
+- Merge com a develop:
 ```git checkout develop```
 ```git pull origin develop```
 ```git merge hotfix/2.0.1/ManutencaoComportamentoUsuariosnoSistema```
 ```git push origin develop```
 ### 2.5 Uso de Rebase - Em qual feature aplicaram `git rebase`?   
 ```Não foi usado o git rebase para integração de features com develop```
-##   
-3. Fase 2 – Trunk-Based Development
+## 3. Fase 2 – Trunk-Based Development
 ### 3.1 Branches Curtos - Quais branches foram criados a partir de `main`? 
 ```Branch: UpdateUsuario / 2 commits```
 ```Branch: trunkbased/UpdServiceeIMPLEvento / 2 commits```
-- 
+```Branch: feature/UpdateUsuario / 2 commits```
+```Branch: feature/Evento / 2 commits```
 ### 3.2 Squash - Qual merge foi feito usando **squash**?   
-- Explique por que foi escolhido squash em vez de merge normal.
+- Explique por que foi escolhido squash em vez de merge normal.:
+```Foi utilizado o squash na feature UpdateUsuario. Isto foi feito pois as alterações feitas foram mínimas e a abstração do squash ajudou a deixar o histórico mais limpo e condensado no commit "RESOLVED: Erro de inicialização / ADD: Relatorio.md".```
 ### 3.3 Tag Final - Tag criada: `v3.0`.
-- Prints do histórico.
+- Prints do histórico.:
+<img src="imagens/historicov0.3.png">
 
 ## 4. Histórico de Commits
    Inclua saída do comando:
-```bash 
+```bash
 git log --oneline --graph --all
+```
+<img src="imagens/logGraph1.png">
+
+<img src="imagens/logGrap2.png">
+
+<img src="imagens/logGraph3.png">
