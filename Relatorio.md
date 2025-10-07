@@ -13,7 +13,7 @@
 ``` Sim, a branch Develop foi criada pouco tempo depois da criação da branch main para melhor organização do código.```
 - Descreva como foi feita a configuração inicial (comandos usados e prints).
 ``` Após a criação do repositório, foram adicionados os arquivos: README.md e LICENSE.txt, utilizando os comandos: "git init", "git remote",  "git add" e "git push", comandos que foram utilizados um tempo depois para a adição dos primeiros códigos do projeto.```
-<img src="imagens/InicioCmt.png">
+<img src="parkgusmap/imagens/InicioCmt.png">
 
 ## 2. Fase 1 – Git Flow
 ### 2.1 Features - Quais features foram criadas?   
@@ -25,12 +25,12 @@
 ```feature/dto-comentario: Feature utilizada para a criação e estruturação do DTO da entidade Comentario, implementando os padrões de transferência de dados para a funcionalidade de comentários no sistema;    ```
 ```feature/dto-local: Feature utilizada para a criação do DTO da entidade Local, definindo os atributos principais e estrutura de dados para transferência das informações de locais entre as camadas da aplicação;   ```
 - Prints dos commits:
-<img src="imagens/featuresVini.png">
-<img src="imagens/featuresVini2.png">
-<img src="imagens/Commits-Feature-Avaliacao.png">
-<img src="imagens/Commits-Feature-Usuario.png">
-<img src="imagens/print1-luiz.png">
-<img src="imagens/print2-luiz.png">
+<img src="parkgusmap/imagens/featuresVini.png">
+<img src="parkgusmap/imagens/featuresVini2.png">
+<img src="parkgusmap/imagens/Commits-Feature-Avaliacao.png">
+<img src="parkgusmap/imagens/Commits-Feature-Usuario.png">
+<img src="parkgusmap/imagens/print1-luiz.png">
+<img src="parkgusmap/imagens/print2-luiz.png">
 
 ### 2.2 Conflitos - Onde ocorreram conflitos (arquivos/linhas)?   
 - Como os conflitos foram resolvidos? 
@@ -43,14 +43,14 @@
 - Inclua prints mostrando os marcadores (`<<<<<<<`, `=======`, `>>>>>>>`) e o
 arquivo final após resolução.
 ```prints conflitos```
-<img src="imagens/conflito1.png">
-<img src="imagens/conflito2.png">
-<img src="imagens/conflito3.png">
-<img src="imagens/conflito4.png">
+<img src="parkgusmap/imagens/conflito1.png">
+<img src="parkgusmap/imagens/conflito2.png">
+<img src="parkgusmap/imagens/conflito3.png">
+<img src="parkgusmap/imagens/conflito4.png">
 
 ```arquivo finalizado com solução```
-<img src="imagens/printfinal1.png">
-<img src="imagens/printfinal2.png">
+<img src="parkgusmap/imagens/printfinal1.png">
+<img src="parkgusmap/imagens/printfinal2.png">
 
 ### 2.3 Release - Criada branch `release/2.0`?   
 - Alterações preparatórias:
@@ -70,7 +70,7 @@ arquivo final após resolução.
 ```Criação da branch: hotfix/2.0.1/ManutencaoComportamentoUsuariosnoSistema a partir da main feita pelo GitHub```
 
 - Commits: UPD: UsuarioAdministrador e Usuariovaliador -> para Usuario (Enums) - Modificando o comportamento do sistema
-<img src="imagens/Commits-HotFix.png">
+<img src="parkgusmap/imagens/Commits-HotFix.png">
 
 - Merge com a main:
 ```git checkout main ```
@@ -101,15 +101,15 @@ arquivo final após resolução.
 ```O squash foi utilizado na branch feature/validacao-localdto porque as validações implementadas no LocalDTO representavam uma funcionalidade coesa e bem definida - a adição de anotações de validação Jakarta Bean Validation (@NotBlank, @Size, @NotNull).```
 ### 3.3 Tag Final - Tag criada: `v3.0`.
 - Prints do histórico.:
-<img src="imagens/historicov0.3.png">
+<img src="parkgusmap/imagens/historicov0.3.png">
 
 ## 4. Histórico de Commits
    Inclua saída do comando:
 ```bash
 git log --oneline --graph --all
 ```
-<img src="imagens/logGraph1.png">
+<img src="parkgusmap/imagens/logGraph1.png">
 
-<img src="imagens/logGrap2.png">
+<img src="parkgusmap/imagens/logGrap2.png">
 
-<img src="imagens/logGraph3.png">
+<img src="parkgusmap/imagens/logGraph3.png">
