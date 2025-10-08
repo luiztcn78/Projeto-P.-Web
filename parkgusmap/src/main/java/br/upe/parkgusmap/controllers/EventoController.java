@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,20 +32,25 @@ public class EventoController {
     }
 
     @GetMapping("/adm/{adminId}")
-    public ResponseEntity<List<Evento>> buscarEventosPorAdmin(@PathVariable Long adminId){
+    public ResponseEntity<List<EventoDTO>> buscarEventosPorAdmin(@PathVariable Long adminId){
+        EventoDTO dto = new EventoDTO();
         List<Evento> eventos = eventoService.findByAdministradorId(adminId);
+        List<EventoDTO> eventosDTO = dto.transformarListaDTO(eventos);
 
-        if(eventos != null){
-            return ResponseEntity.ok(eventos);
+        if(eventosDTO != null){
+            return ResponseEntity.ok(eventosDTO);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        return ResponseEntity.status(404).body(null);
     }
 
     @GetMapping("/local/{localId}")
-    public ResponseEntity<List<Evento>> buscarEventosLocal(@PathVariable Long localId){
+    public ResponseEntity<List<EventoDTO>> buscarEventosLocal(@PathVariable Long localId){
+        EventoDTO dto = new EventoDTO();
         List<Evento> eventos = eventoService.findByLocalId(localId);
-        if(eventos != null){
-            return ResponseEntity.ok(eventos);
+        List<EventoDTO> eventosDTO = dto.transformarListaDTO(eventos);
+
+        if(eventosDTO != null){
+            return ResponseEntity.ok(eventosDTO);
         }
         return ResponseEntity.status(404).body(null);
     }
@@ -70,10 +77,25 @@ public class EventoController {
     }
 
     @GetMapping("/Atuais")
-    public ResponseEntity<List<Evento>> buscarEventosAtuais(){
+    public ResponseEntity<List<EventoDTO>> buscarEventosAtuais(){
+        EventoDTO dto = new EventoDTO();
         List<Evento> eventos = eventoService.findEventosFuturos();
-        if(eventos != null){
-            return ResponseEntity.ok(eventos);
+        List<EventoDTO> eventosDTO = dto.transformarListaDTO(eventos);
+
+        if(eventosDTO != null){
+            return ResponseEntity.ok(eventosDTO);
+        }
+        return ResponseEntity.status(404).body(null);
+    }
+
+    @GetMapping("{Inicio}/{fim}")
+    public ResponseEntity<List<EventoDTO>> buscarEventosPeriodo(@PathVariable LocalDateTime inicio,@PathVariable LocalDateTime fim){
+        EventoDTO dto = new EventoDTO();
+        List<Evento> eventos = eventoService.findByPeriodo(inicio, fim);
+        List<EventoDTO> eventosDTO = dto.transformarListaDTO(eventos);
+
+        if(eventosDTO != null){
+            return ResponseEntity.ok(eventosDTO);
         }
         return ResponseEntity.status(404).body(null);
     }

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -60,5 +61,15 @@ public class EventoDTO {
                 .stream()
                 .map(Usuario::getId)
                 .toList();
+    }
+
+    public List<EventoDTO> transformarListaDTO(List<Evento> eventos){
+
+        List<EventoDTO> eventosdto = new ArrayList<>();
+        for(Evento evento : eventos){
+            EventoDTO eventoDTO = new EventoDTO(evento);
+            eventosdto.add(eventoDTO);
+        }
+        return eventosdto;
     }
 }
