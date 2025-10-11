@@ -8,6 +8,7 @@ import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.LocalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LocalController {
 
+    @Autowired
     private final LocalService localService;
     private final UsuarioRepository usuarioRepository;
 

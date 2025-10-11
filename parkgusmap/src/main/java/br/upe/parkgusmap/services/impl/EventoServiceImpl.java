@@ -22,7 +22,9 @@ public class EventoServiceImpl implements EventoService {
 
     @Autowired
     private final EventoRepository eventoRepository;
+    @Autowired
     private final UsuarioRepository usuarioRepository;
+    @Autowired
     private final LocalService localService;
 
     @Override

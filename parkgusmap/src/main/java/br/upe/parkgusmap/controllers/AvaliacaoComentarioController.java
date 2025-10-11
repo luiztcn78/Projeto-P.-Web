@@ -7,6 +7,7 @@ import br.upe.parkgusmap.entities.DTOs.ComentarioDTO;
 import br.upe.parkgusmap.services.AvaliacaoService;
 import br.upe.parkgusmap.services.ComentarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AvaliacaoComentarioController {
 
+    @Autowired
     private final AvaliacaoService avaliacaoService;
+    @Autowired
     private final ComentarioService comentarioService;
 
     @PostMapping("/avaliacoes")

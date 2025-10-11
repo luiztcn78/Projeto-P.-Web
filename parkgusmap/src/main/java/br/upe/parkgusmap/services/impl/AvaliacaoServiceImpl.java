@@ -8,6 +8,7 @@ import br.upe.parkgusmap.repositories.LocalRepository;
 import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.AvaliacaoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +18,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AvaliacaoServiceImpl implements AvaliacaoService {
 
+    @Autowired
     private final AvaliacaoRepository avaliacaoRepository;
+    @Autowired
     private final UsuarioRepository usuarioRepository;
+    @Autowired
     private final LocalRepository localRepository;
 
     @Override

@@ -18,6 +18,7 @@ public class LocalServiceImpl implements LocalService {
 
     @Autowired
     private LocalRepository localRepository;
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
 

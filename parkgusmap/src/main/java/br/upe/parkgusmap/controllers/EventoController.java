@@ -20,15 +20,15 @@ public class EventoController {
     private EventoService eventoService;
 
     @PostMapping
-    public ResponseEntity<Evento> registrarEvento(@RequestBody EventoDTO eventodto){
+    public ResponseEntity<EventoDTO> registrarEvento(@RequestBody EventoDTO eventodto){
 
         Evento eventoDesDTO = eventoService.eventoDTOToEvento(eventodto);
         Evento eventoResgistro = eventoService.registrarEvento(eventoDesDTO);
 
         if(eventoResgistro != null){
-            return ResponseEntity.ok(eventoResgistro);
+            return ResponseEntity.ok(eventodto);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        return ResponseEntity.status(404).body(null);
     }
 
     @GetMapping("/adm/{adminId}")
@@ -56,13 +56,14 @@ public class EventoController {
     }
 
     @PutMapping("/{eventoId}/descricao")
-    public ResponseEntity<Evento> alterarDescricao(
+    public ResponseEntity<EventoDTO> alterarDescricao(
             @PathVariable Long eventoId,
             @RequestParam String novaDescricao,
             @RequestParam Long usuarioId) {
 
         Evento evento = eventoService.alterarDescricaoEvento(eventoId, novaDescricao, usuarioId);
-        return ResponseEntity.ok(evento);
+        EventoDTO eventoDTO = new EventoDTO(evento);
+        return ResponseEntity.ok(eventoDTO);
     }
 
     @DeleteMapping("/{eventoId}")
@@ -88,7 +89,7 @@ public class EventoController {
         return ResponseEntity.status(404).body(null);
     }
 
-    @GetMapping("{Inicio}/{fim}")
+    @GetMapping("/{inicio}/{fim}")
     public ResponseEntity<List<EventoDTO>> buscarEventosPeriodo(@PathVariable LocalDateTime inicio,@PathVariable LocalDateTime fim){
         EventoDTO dto = new EventoDTO();
         List<Evento> eventos = eventoService.findByPeriodo(inicio, fim);

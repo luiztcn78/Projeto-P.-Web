@@ -20,7 +20,9 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Autowired
     private final ComentarioRepository comentarioRepository;
+    @Autowired
     private final UsuarioRepository usuarioRepository;
+    @Autowired
     private final LocalRepository localRepository;
 
     @Override

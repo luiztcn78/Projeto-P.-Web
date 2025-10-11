@@ -4,6 +4,7 @@ package br.upe.parkgusmap.controllers;
 import br.upe.parkgusmap.entities.DTOs.UsuarioCreateDTO;
 import br.upe.parkgusmap.entities.DTOs.UsuarioResponsivoDTO;
 import br.upe.parkgusmap.entities.Enums.Perfil;
+import br.upe.parkgusmap.entities.Evento;
 import br.upe.parkgusmap.entities.Usuario;
 import br.upe.parkgusmap.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,4 +73,16 @@ public class UsuarioController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(avaliadores);
     }
+
+    @DeleteMapping("/{usuarioId}")
+    public ResponseEntity<Usuario> removerUsuario(@PathVariable Long usuarioId){
+        boolean removido = usuarioService.removerUsuario(usuarioId);
+
+        if(removido){
+            return ResponseEntity.status(200).body(null);
+        }
+
+        return ResponseEntity.status(404).body(null);
+    }
 }
+
