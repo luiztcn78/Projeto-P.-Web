@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -28,4 +30,7 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     private Perfil perfil;
+
+    @Column
+    private List<Local> LocaisFavoritos;
 }

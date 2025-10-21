@@ -1,11 +1,14 @@
 package br.upe.parkgusmap.services.impl;
 import br.upe.parkgusmap.entities.Enums.Perfil;
+import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.Usuario;
+import br.upe.parkgusmap.repositories.LocalRepository;
 import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,6 +16,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+
+    @Autowired
+    LocalRepository localRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Override
     public Usuario cadastrarUsuario(Usuario usuario) {
@@ -65,6 +73,50 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new IllegalArgumentException("Usuário não encontrado");
         }
         return usuario;
+    }
+
+    @Override
+    public List<Local> buscarFavoritosPorId(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+
+        if (usuario != null) {
+            return usuario.getLocaisFavoritos();
+        }
+        else {
+            throw new IllegalArgumentException("Usuário não existe");
+        }
+    }
+
+    @Override
+    public boolean adicionarLocalFavorito(Long localId, Long  usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+        Local local = localRepository.findById(localId).orElse(null);
+
+        if (usuario != null) {
+            List<Local> locaisFavoritos = usuario.getLocaisFavoritos();
+            locaisFavoritos.add(local);
+            usuario.setLocaisFavoritos(locaisFavoritos);
+            usuarioRepository.save(usuario);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean removeLocalFavorito(Long localId,  Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+        Local local = localRepository.findById(localId).orElse(null);
+
+        if (usuario != null) {
+            List<Local> locaisFavoritos = usuario.getLocaisFavoritos();
+            locaisFavoritos.remove(local);
+            usuario.setLocaisFavoritos(locaisFavoritos);
+            usuarioRepository.save(usuario);
+            return true;
+        }
+
+        return false;
     }
 }
 

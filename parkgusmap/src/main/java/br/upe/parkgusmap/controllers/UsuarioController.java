@@ -4,7 +4,7 @@ package br.upe.parkgusmap.controllers;
 import br.upe.parkgusmap.entities.DTOs.UsuarioCreateDTO;
 import br.upe.parkgusmap.entities.DTOs.UsuarioResponsivoDTO;
 import br.upe.parkgusmap.entities.Enums.Perfil;
-import br.upe.parkgusmap.entities.Evento;
+import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.Usuario;
 import br.upe.parkgusmap.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +83,40 @@ public class UsuarioController {
         }
 
         return ResponseEntity.status(404).body(null);
+    }
+
+    //Listar Favoritos
+    @GetMapping("/fav/{usuarioId}")
+    public ResponseEntity<List<Local>> buscarFavoritosUsuario(@PathVariable Long usuarioId){
+        List<Local> locaisFavoritos = usuarioService.buscarFavoritosPorId(usuarioId);
+
+        if(locaisFavoritos.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(locaisFavoritos);
+    }
+    //add fav
+    @PutMapping("/fav/{localId}/{usuarioId}")
+    public ResponseEntity<UsuarioResponsivoDTO> adicionarLocalAosFavoritos(@PathVariable Long localId, @PathVariable Long usuarioId){
+        boolean sucesso = usuarioService.adicionarLocalFavorito(localId, usuarioId);
+        Usuario usuario = usuarioService.buscarUsuarioPorId(usuarioId);
+        UsuarioResponsivoDTO dto = new UsuarioResponsivoDTO(usuario);
+        if(sucesso){
+            return ResponseEntity.status(200).body(dto);
+        }
+        return ResponseEntity.badRequest().body(dto);
+    }
+    //remove fav
+    @PutMapping("/fav/remove/{localId}/{usuarioId}")
+    public ResponseEntity<UsuarioResponsivoDTO> removerLocalFavoritos(@PathVariable Long localId, @PathVariable Long usuarioId){
+        boolean sucesso = usuarioService.removeLocalFavorito(localId, usuarioId);
+        Usuario usuario = usuarioService.buscarUsuarioPorId(usuarioId);
+        UsuarioResponsivoDTO dto = new UsuarioResponsivoDTO(usuario);
+        if(sucesso){
+            return ResponseEntity.status(200).body(dto);
+        }
+        return ResponseEntity.badRequest().body(dto);
     }
 }
 
