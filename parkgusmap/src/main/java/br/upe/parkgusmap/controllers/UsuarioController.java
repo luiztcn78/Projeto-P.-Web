@@ -1,11 +1,14 @@
 package br.upe.parkgusmap.controllers;
 
 
+import br.upe.parkgusmap.entities.Comentario;
 import br.upe.parkgusmap.entities.DTOs.UsuarioCreateDTO;
 import br.upe.parkgusmap.entities.DTOs.UsuarioResponsivoDTO;
+import br.upe.parkgusmap.entities.Denuncia;
 import br.upe.parkgusmap.entities.Enums.Perfil;
 import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.Usuario;
+import br.upe.parkgusmap.services.DenunciaService;
 import br.upe.parkgusmap.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,10 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    DenunciaService denunciaService;
+
 
     @PostMapping
     public ResponseEntity<UsuarioResponsivoDTO> cadastrarUsuario(@RequestBody UsuarioCreateDTO dto) {
@@ -117,6 +124,39 @@ public class UsuarioController {
             return ResponseEntity.status(200).body(dto);
         }
         return ResponseEntity.badRequest().body(dto);
+    }
+
+    @PostMapping("/denun")
+    public ResponseEntity<Denuncia> fazerDenuncia(@RequestBody Denuncia denuncia, @RequestParam Long idDenunciado){
+        denuncia.setIdDenunciado(idDenunciado);
+        denunciaService.fazerDenuncia(denuncia);
+        return ResponseEntity.status(200).body(denuncia);
+    }
+
+    @GetMapping("/administradores/denuncias/{idUsuario}")
+    public ResponseEntity<List<Denuncia>> listarDenuncias(@PathVariable Long idUsuario){
+        Usuario usuario = usuarioService.buscarUsuarioPorId(idUsuario);
+
+        List<Denuncia> denuncias = null;
+
+        if(usuario.getPerfil() == Perfil.ADMINISTRADOR){
+            denuncias = denunciaService.listarTodasDenuncias();
+            return ResponseEntity.status(200).body(denuncias);
+        }
+        //retornar erro
+        return ResponseEntity.status(404).body(denuncias);
+    }
+
+    @GetMapping("/administradores/denuncia/{idUsuario}/{idDenun}")
+    public ResponseEntity<Comentario> buscarComentarioDenunciado(@PathVariable Long idUsuario, @PathVariable Long idDenun){
+        Usuario usuario = usuarioService.buscarUsuarioPorId(idUsuario);
+
+        Comentario comentario = null;
+        if(usuario.getPerfil() == Perfil.ADMINISTRADOR){
+            comentario = denunciaService.encontrarComentarioDenunciado(idDenun);
+            return ResponseEntity.status(200).body(comentario);
+        }
+        return ResponseEntity.status(404).body(comentario);
     }
 }
 
