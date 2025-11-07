@@ -1,5 +1,6 @@
 package br.upe.parkgusmap.services.impl;
 
+import br.upe.parkgusmap.Exeptions.UsuarioNaoEncontrado;
 import br.upe.parkgusmap.entities.Enums.Perfil;
 import br.upe.parkgusmap.entities.Evento;
 import br.upe.parkgusmap.entities.Local;
@@ -45,7 +46,7 @@ public class LocalServiceImpl implements LocalService {
     @Override
     public Local update(Long id, Local local) {
         if (!localRepository.existsById(id)) {
-            throw new RuntimeException("Local não encontrado com id: " + id);
+            throw new RuntimeException("Local não encontrado com id: " + id); //local nao encontrado
         }
         local.setId(id);
         return localRepository.save(local);
@@ -54,24 +55,27 @@ public class LocalServiceImpl implements LocalService {
     @Override
     public void deleteById(Long id) {
         if (!localRepository.existsById(id)) {
-            throw new RuntimeException("Local não encontrado com id: " + id);
+            throw new RuntimeException("Local não encontrado com id: " + id); //local nao encontrado
         }
         localRepository.deleteById(id);
     }
 
     @Override
     public List<Local> findByAdministradorId(Long usuarioId) {
+        if(!usuarioRepository.existsById(usuarioId)){
+            throw new UsuarioNaoEncontrado();
+        }
         return localRepository.findByAdministradoresId(usuarioId);
     }
 
     @Override
     public List<Local> findByNomeContaining(String nome) {
-        return localRepository.findByNomeContainingIgnoreCase(nome);
+        return localRepository.findByNomeContainingIgnoreCase(nome); //precisa de erro?
     }
 
     @Override
     public List<Local> findByEnderecoContaining(String endereco) {
-        return localRepository.findByEnderecoContainingIgnoreCase(endereco);
+        return localRepository.findByEnderecoContainingIgnoreCase(endereco); //precisa de erro?
     }
 
     @Override
@@ -82,13 +86,13 @@ public class LocalServiceImpl implements LocalService {
     @Override
     public Local addAdministradorToLocal(Long localId, Long usuarioId) {
         Local local = localRepository.findById(localId)
-                .orElseThrow(() -> new RuntimeException("Local não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Local não encontrado")); //local nao encontrado
 
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado")); //usuario nao encontrado
 
         if (!usuario.getPerfil().equals(Perfil.ADMINISTRADOR)) {
-            throw new RuntimeException("Usuário não possui perfil de ADMINISTRADOR");
+            throw new RuntimeException("Usuário não possui perfil de ADMINISTRADOR"); //usuario nao adminnistrador
         }
 
         if (!local.getAdministradores().contains(usuario)) {
@@ -102,10 +106,10 @@ public class LocalServiceImpl implements LocalService {
     @Override
     public Local removeAdministradorFromLocal(Long localId, Long usuarioId) {
         Local local = localRepository.findById(localId)
-                .orElseThrow(() -> new RuntimeException("Local não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Local não encontrado")); //local nao encontrado
 
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado")); //usuario nao encontrado
 
         local.getAdministradores().remove(usuario);
         return localRepository.save(local);
@@ -114,14 +118,14 @@ public class LocalServiceImpl implements LocalService {
     @Override
     public Local alterarDescricaoLocal(Long eventoId, String novaDescricao, Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado")); //usuario nao encontrado
 
         if (usuario.getPerfil() != Perfil.ADMINISTRADOR) {
-            throw new RuntimeException("Apenas administradores podem alterar a descrição do evento");
+            throw new RuntimeException("Apenas administradores podem alterar a descrição do evento"); //usuario nao adm
         }
 
         Local local = localRepository.findById(eventoId)
-                .orElseThrow(() -> new RuntimeException("Local não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Local não encontrado")); //local nao encntardi
 
         // aalterando a descrição
         local.setDescricao(novaDescricao);

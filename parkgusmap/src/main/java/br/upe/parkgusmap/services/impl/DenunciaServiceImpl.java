@@ -23,13 +23,13 @@ public class DenunciaServiceImpl implements DenunciaService{
     public void fazerDenuncia(Denuncia denuncia) {
 
         if(denuncia.getTipo() == null){
-            throw new IllegalArgumentException("O tipo da denúncia não foi definido.");
+            throw new IllegalArgumentException("O tipo da denúncia não foi definido."); //tipo de denuncia indefinido
         }
         if(denuncia.getDescricao() == null || denuncia.getDescricao().trim().isEmpty()){
-            throw new IllegalArgumentException("Escreva o motivo da denúncia.");
+            throw new IllegalArgumentException("Escreva o motivo da denúncia."); // descricao inválida
         }
         if(denuncia.getIdDenunciado() == null){
-            throw new IllegalArgumentException("O Id que você está denunciando não existe.");
+            throw new IllegalArgumentException("O Id que você está denunciando não existe."); //inexistencia do id
         }
         denunciaRepository.save(denuncia);
     }
@@ -43,13 +43,13 @@ public class DenunciaServiceImpl implements DenunciaService{
     public Comentario encontrarComentarioDenunciado(Long IdDenuncia) {
         Denuncia denuncia = denunciaRepository.findById(IdDenuncia).orElse(null);
         if(denuncia == null){
-            throw new IllegalArgumentException("Denuncia não existente.");
+            throw new IllegalArgumentException("Denuncia não existente."); //Denuncia inexistente
         }
         if(denuncia.getTipo() == TipoDenuncia.COMENTARIO){
             Long idDenunciado = denuncia.getIdDenunciado();
             return comentarioRepository.findById(idDenunciado).orElse(null);
         }
-        throw new IllegalArgumentException("O objeto denunciado não foi um comentário.");
+        throw new IllegalArgumentException("O objeto denunciado não foi um comentário."); //objeto n comentar
     }
 
 }

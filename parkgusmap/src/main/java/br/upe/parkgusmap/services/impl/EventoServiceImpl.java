@@ -46,7 +46,7 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public Evento update(Long id, Evento evento) {
         if (!eventoRepository.existsById(id)) {
-            throw new RuntimeException("Evento não encontrado com id: " + id);
+            throw new RuntimeException("Evento não encontrado com id: " + id); //Evento nao encontrado
         }
         evento.setId(id);
         return eventoRepository.save(evento);
@@ -55,7 +55,7 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public void deleteById(Long id) {
         if (!eventoRepository.existsById(id)) {
-            throw new RuntimeException("Evento não encontrado com id: " + id);
+            throw new RuntimeException("Evento não encontrado com id: " + id); //evento nao encontardo
         }
         eventoRepository.deleteById(id);
     }
@@ -84,13 +84,13 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public Evento addAdministradorToEvento(Long eventoId, Long usuarioId) {
         Evento evento = eventoRepository.findById(eventoId)
-                .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Evento não encontrado")); //evnto nao encontrado
 
         Usuario admin = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado")); //usuario nao encontrado
 
         if (admin.getPerfil() != Perfil.ADMINISTRADOR) {
-            throw new RuntimeException("O usuário não é um administrador");
+            throw new RuntimeException("O usuário não é um administrador"); // usuario nao permitido
         }
 
         if (!evento.getAdministradores().contains(admin)) {
@@ -103,10 +103,10 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public Evento removeAdministradorFromEvento(Long eventoId, Long usuarioId) {
         Evento evento = eventoRepository.findById(eventoId)
-                .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Evento não encontrado")); //evento nao encontrado
 
         Usuario admin = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado")); //usuario nao encontrado
 
         evento.getAdministradores().remove(admin);
         return eventoRepository.save(evento);
@@ -136,14 +136,14 @@ public class EventoServiceImpl implements EventoService {
     public Evento alterarDescricaoEvento(Long eventoId, String novaDescricao, Long usuarioId) {
 
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado")); //usuario nao encontrado
 
         if (usuario.getPerfil() != Perfil.ADMINISTRADOR) {
-            throw new RuntimeException("Apenas administradores podem alterar a descrição do evento");
+            throw new RuntimeException("Apenas administradores podem alterar a descrição do evento"); //usuario nao permitido
         }
 
         Evento evento = eventoRepository.findById(eventoId)
-                .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Evento não encontrado")); //evnto nao encontrado
 
         // aalterando a descrição
         evento.setDescricao(novaDescricao);

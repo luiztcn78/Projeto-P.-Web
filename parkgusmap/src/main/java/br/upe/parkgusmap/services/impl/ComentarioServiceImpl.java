@@ -1,5 +1,7 @@
 package br.upe.parkgusmap.services.impl;
 
+import br.upe.parkgusmap.Exeptions.LocalNaoEncontradoException;
+import br.upe.parkgusmap.Exeptions.UsuarioNaoEncontrado;
 import br.upe.parkgusmap.entities.Comentario;
 import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.Usuario;
@@ -28,13 +30,13 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Override
     public Comentario criarComentario(Long usuarioId, Long localId, String texto) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado")); //usuario nao encontrado
 
         Local local = localRepository.findById(localId)
-                .orElseThrow(() -> new IllegalArgumentException("Local não encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Local não encontrado")); //local nao encontrado
 
         if (texto == null || texto.trim().isEmpty()) {
-            throw new IllegalArgumentException("Comentário vazio ou inválido");
+            throw new IllegalArgumentException("Comentário vazio ou inválido"); //comentario inválido
         }
 
         Comentario comentario = new Comentario();
@@ -63,7 +65,7 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Override
     public Comentario update(Long id, Comentario comentario) {
         if (!comentarioRepository.existsById(id)) {
-            throw new RuntimeException("Comentário não encontrado com id: " + id);
+            throw new RuntimeException("Comentário não encontrado com id: " + id); //comentarioNaoEncontrado
         }
         comentario.setId(id);
         return comentarioRepository.save(comentario);
@@ -72,13 +74,17 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Override
     public void deleteById(Long id) {
         if (!comentarioRepository.existsById(id)) {
-            throw new RuntimeException("Comentário não encontrado com id: " + id);
+            throw new RuntimeException("Comentário não encontrado com id: " + id); // comentario não encontrado
         }
         comentarioRepository.deleteById(id);
     }
 
     @Override
     public List<Comentario> findByUsuarioId(Long usuarioId) {
+
+        if(!usuarioRepository.existsById(usuarioId)) {
+            throw new UsuarioNaoEncontrado();
+        }
         return comentarioRepository.findByUsuarioId(usuarioId);
     }
 
@@ -89,6 +95,12 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Override
     public List<Comentario> findByUsuarioIdAndLocalId(Long usuarioId, Long localId) {
+        if(!usuarioRepository.existsById(usuarioId)) {
+            throw new UsuarioNaoEncontrado();
+        }
+        if(!localRepository.existsById(localId)) {
+            throw new LocalNaoEncontradoException();
+        }
         return comentarioRepository.findByUsuarioIdAndLocalId(usuarioId, localId);
     }
 }

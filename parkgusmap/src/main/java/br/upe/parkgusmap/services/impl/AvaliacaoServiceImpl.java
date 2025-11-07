@@ -28,13 +28,13 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
     @Override
     public Avaliacao criarAvaliacao(Long usuarioId, Long localId, int nota) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new IllegalArgumentException("Avaliador não encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Avaliador não encontrado")); //Usuario não encontardo
 
         Local local = localRepository.findById(localId)
-                .orElseThrow(() -> new IllegalArgumentException("Local não encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Local não encontrado")); //Local não encontrado
 
         if (nota < 1 || nota > 5) {
-            throw new IllegalArgumentException("A avaliação deve ser entre 1 e 5");
+            throw new IllegalArgumentException("A avaliação deve ser entre 1 e 5"); //Nota inválida
         }
 
         Avaliacao avaliacao = new Avaliacao();
@@ -63,7 +63,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
     @Override
     public Avaliacao update(Long id, Avaliacao avaliacao) {
         if (!avaliacaoRepository.existsById(id)) {
-            throw new RuntimeException("Avaliação não encontrada com id: " + id);
+            throw new RuntimeException("Avaliação não encontrada com id: " + id); //avaliacao nao encontrada
         }
         avaliacao.setId(id);
         return avaliacaoRepository.save(avaliacao);
@@ -72,7 +72,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
     @Override
     public void deleteById(Long id) {
         if (!avaliacaoRepository.existsById(id)) {
-            throw new RuntimeException("Avaliação não encontrada com id: " + id);
+            throw new RuntimeException("Avaliação não encontrada com id: " + id); //avaliacao nao encontrada
         }
         avaliacaoRepository.deleteById(id);
     }
@@ -89,6 +89,12 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
 
     @Override
     public List<Avaliacao> findByUsuarioIdAndLocalId(Long usuarioId, Long localId) {
+        if(!usuarioRepository.existsById(usuarioId)){
+            throw new RuntimeException(); //usuario nao encontrado
+        }
+        if(!localRepository.existsById(localId)){
+            throw new RuntimeException(); //local nao encontrado
+        }
         return avaliacaoRepository.findByUsuarioIdAndLocalId(usuarioId, localId);
     }
 
