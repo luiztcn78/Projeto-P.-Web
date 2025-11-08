@@ -1,5 +1,6 @@
 package br.upe.parkgusmap.services.impl;
 
+import br.upe.parkgusmap.Exeptions.*;
 import br.upe.parkgusmap.entities.Comentario;
 import br.upe.parkgusmap.entities.Denuncia;
 import br.upe.parkgusmap.entities.Enums.TipoDenuncia;
@@ -23,13 +24,13 @@ public class DenunciaServiceImpl implements DenunciaService{
     public void fazerDenuncia(Denuncia denuncia) {
 
         if(denuncia.getTipo() == null){
-            throw new IllegalArgumentException("O tipo da denúncia não foi definido."); //tipo de denuncia indefinido
+            throw new TipoDeDenunciaIndefinidoException();
         }
         if(denuncia.getDescricao() == null || denuncia.getDescricao().trim().isEmpty()){
-            throw new IllegalArgumentException("Escreva o motivo da denúncia."); // descricao inválida
+            throw new DescricaoInvalidaException();
         }
         if(denuncia.getIdDenunciado() == null){
-            throw new IllegalArgumentException("O Id que você está denunciando não existe."); //inexistencia do id
+            throw new InexistenciaDoIdException(denuncia.getId());
         }
         denunciaRepository.save(denuncia);
     }
@@ -43,13 +44,13 @@ public class DenunciaServiceImpl implements DenunciaService{
     public Comentario encontrarComentarioDenunciado(Long IdDenuncia) {
         Denuncia denuncia = denunciaRepository.findById(IdDenuncia).orElse(null);
         if(denuncia == null){
-            throw new IllegalArgumentException("Denuncia não existente."); //Denuncia inexistente
+            throw new DenunciaInexistenteException();
         }
         if(denuncia.getTipo() == TipoDenuncia.COMENTARIO){
             Long idDenunciado = denuncia.getIdDenunciado();
             return comentarioRepository.findById(idDenunciado).orElse(null);
         }
-        throw new IllegalArgumentException("O objeto denunciado não foi um comentário."); //objeto n comentar
+        throw new ObjetoDenunciadoNaoComentarioException();
     }
 
 }

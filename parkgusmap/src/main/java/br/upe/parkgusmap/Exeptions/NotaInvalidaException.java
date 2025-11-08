@@ -6,6 +6,6 @@ public class NotaInvalidaException extends RuntimeException {
     }
 
     public NotaInvalidaException() {
-        super("Bad Request - Nota Inválida");
+        super("Bad Request - Nota Inválida (Deve estar entre 1 e 5)");
     }
 }

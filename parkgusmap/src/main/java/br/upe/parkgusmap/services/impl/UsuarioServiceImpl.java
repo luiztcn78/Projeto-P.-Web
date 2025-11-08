@@ -1,4 +1,7 @@
 package br.upe.parkgusmap.services.impl;
+import br.upe.parkgusmap.Exeptions.EmailJaCadastradoException;
+import br.upe.parkgusmap.Exeptions.NomeDeUsuarioInvalidoException;
+import br.upe.parkgusmap.Exeptions.UsuarioNaoEncontradoException;
 import br.upe.parkgusmap.entities.Enums.Perfil;
 import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.Usuario;
@@ -26,12 +29,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario cadastrarUsuario(Usuario usuario) {
         // validar nome
         if (usuario.getNome() == null || usuario.getNome().isEmpty()) {
-            throw new IllegalArgumentException("Nome não pode ser vazio"); //nome de usuario inválido
+            throw new NomeDeUsuarioInvalidoException(); //nome de usuario inválido
         }
 
         // valdar de email
         if (usuarioRepository.findByEmail(usuario.getEmail()) != null) {
-            throw new IllegalArgumentException("Email já cadastrado"); //email ja cadastrado
+            throw new EmailJaCadastradoException(usuario.getEmail());
         }
 
         return usuarioRepository.save(usuario);
@@ -40,7 +43,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public boolean removerUsuario(Long id) {
         if (usuarioRepository.findById(id).isEmpty()) {
-            throw new IllegalArgumentException("Usuário não encontrado"); //usuario nao encontrado
+            throw new UsuarioNaoEncontradoException(id);
         }
 
         usuarioRepository.deleteById(id);
@@ -61,7 +64,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario buscarUsuarioPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
         if (usuario == null) {
-            throw new IllegalArgumentException("Usuário não encontrado"); //usuario nao encontrado
+            throw new UsuarioNaoEncontradoException(id);
         }
         return usuario;
     }
@@ -70,7 +73,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario buscarPorEmail(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email);
         if (usuario == null) {
-            throw new IllegalArgumentException("Usuário não encontrado"); //usuario nao encontrado
+            throw new UsuarioNaoEncontradoException(email);
         }
         return usuario;
     }
@@ -83,7 +86,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             return usuario.getLocaisFavoritos();
         }
         else {
-            throw new IllegalArgumentException("Usuário não existe"); //usuario nao encontrado
+            throw new UsuarioNaoEncontradoException(idUsuario);
         }
     }
 

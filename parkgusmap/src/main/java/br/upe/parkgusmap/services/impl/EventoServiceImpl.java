@@ -1,5 +1,8 @@
 package br.upe.parkgusmap.services.impl;
 
+import br.upe.parkgusmap.Exeptions.AcessoNaoPermitidoException;
+import br.upe.parkgusmap.Exeptions.EventoNaoEncontradoException;
+import br.upe.parkgusmap.Exeptions.UsuarioNaoEncontradoException;
 import br.upe.parkgusmap.entities.DTOs.EventoDTO;
 import br.upe.parkgusmap.entities.Enums.Perfil;
 import br.upe.parkgusmap.entities.Evento;
@@ -46,7 +49,7 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public Evento update(Long id, Evento evento) {
         if (!eventoRepository.existsById(id)) {
-            throw new RuntimeException("Evento não encontrado com id: " + id); //Evento nao encontrado
+            throw new EventoNaoEncontradoException(id);
         }
         evento.setId(id);
         return eventoRepository.save(evento);
@@ -55,7 +58,7 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public void deleteById(Long id) {
         if (!eventoRepository.existsById(id)) {
-            throw new RuntimeException("Evento não encontrado com id: " + id); //evento nao encontardo
+            throw new EventoNaoEncontradoException(id);
         }
         eventoRepository.deleteById(id);
     }
@@ -84,13 +87,13 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public Evento addAdministradorToEvento(Long eventoId, Long usuarioId) {
         Evento evento = eventoRepository.findById(eventoId)
-                .orElseThrow(() -> new RuntimeException("Evento não encontrado")); //evnto nao encontrado
+                .orElseThrow(() -> new EventoNaoEncontradoException(eventoId));
 
         Usuario admin = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado")); //usuario nao encontrado
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(usuarioId));
 
         if (admin.getPerfil() != Perfil.ADMINISTRADOR) {
-            throw new RuntimeException("O usuário não é um administrador"); // usuario nao permitido
+            throw new AcessoNaoPermitidoException();
         }
 
         if (!evento.getAdministradores().contains(admin)) {
@@ -103,10 +106,10 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public Evento removeAdministradorFromEvento(Long eventoId, Long usuarioId) {
         Evento evento = eventoRepository.findById(eventoId)
-                .orElseThrow(() -> new RuntimeException("Evento não encontrado")); //evento nao encontrado
+                .orElseThrow(() -> new EventoNaoEncontradoException(eventoId));
 
         Usuario admin = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado")); //usuario nao encontrado
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(usuarioId));
 
         evento.getAdministradores().remove(admin);
         return eventoRepository.save(evento);
@@ -136,14 +139,14 @@ public class EventoServiceImpl implements EventoService {
     public Evento alterarDescricaoEvento(Long eventoId, String novaDescricao, Long usuarioId) {
 
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado")); //usuario nao encontrado
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(usuarioId));
 
         if (usuario.getPerfil() != Perfil.ADMINISTRADOR) {
-            throw new RuntimeException("Apenas administradores podem alterar a descrição do evento"); //usuario nao permitido
+            throw new AcessoNaoPermitidoException();
         }
 
         Evento evento = eventoRepository.findById(eventoId)
-                .orElseThrow(() -> new RuntimeException("Evento não encontrado")); //evnto nao encontrado
+                .orElseThrow(() -> new EventoNaoEncontradoException(eventoId)); //evnto nao encontrado
 
         // aalterando a descrição
         evento.setDescricao(novaDescricao);

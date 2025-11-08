@@ -5,7 +5,7 @@ public class ComentarioNaoEncontrado extends RuntimeException {
         super(message);
     }
 
-    public ComentarioNaoEncontrado() {
-        super("Bad Request - Comentário não Encontrado");
+    public ComentarioNaoEncontrado(Long id) {
+        super("Bad Request - Comentário não Encontrado: " + id);
     }
 }

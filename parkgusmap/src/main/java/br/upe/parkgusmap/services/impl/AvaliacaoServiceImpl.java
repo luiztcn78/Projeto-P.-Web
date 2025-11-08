@@ -1,5 +1,9 @@
 package br.upe.parkgusmap.services.impl;
 
+import br.upe.parkgusmap.Exeptions.AvaliacaoNaoEncontradaException;
+import br.upe.parkgusmap.Exeptions.LocalNaoEncontradoException;
+import br.upe.parkgusmap.Exeptions.NotaInvalidaException;
+import br.upe.parkgusmap.Exeptions.UsuarioNaoEncontradoException;
 import br.upe.parkgusmap.entities.Avaliacao;
 import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.Usuario;
@@ -28,13 +32,13 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
     @Override
     public Avaliacao criarAvaliacao(Long usuarioId, Long localId, int nota) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new IllegalArgumentException("Avaliador não encontrado")); //Usuario não encontardo
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(usuarioId));
 
         Local local = localRepository.findById(localId)
-                .orElseThrow(() -> new IllegalArgumentException("Local não encontrado")); //Local não encontrado
+                .orElseThrow(() -> new LocalNaoEncontradoException(localId));
 
         if (nota < 1 || nota > 5) {
-            throw new IllegalArgumentException("A avaliação deve ser entre 1 e 5"); //Nota inválida
+            throw new NotaInvalidaException(); //Nota inválida
         }
 
         Avaliacao avaliacao = new Avaliacao();
@@ -63,7 +67,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
     @Override
     public Avaliacao update(Long id, Avaliacao avaliacao) {
         if (!avaliacaoRepository.existsById(id)) {
-            throw new RuntimeException("Avaliação não encontrada com id: " + id); //avaliacao nao encontrada
+            throw new AvaliacaoNaoEncontradaException(id);
         }
         avaliacao.setId(id);
         return avaliacaoRepository.save(avaliacao);
@@ -72,7 +76,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
     @Override
     public void deleteById(Long id) {
         if (!avaliacaoRepository.existsById(id)) {
-            throw new RuntimeException("Avaliação não encontrada com id: " + id); //avaliacao nao encontrada
+            throw new AvaliacaoNaoEncontradaException(id);
         }
         avaliacaoRepository.deleteById(id);
     }
@@ -90,10 +94,10 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
     @Override
     public List<Avaliacao> findByUsuarioIdAndLocalId(Long usuarioId, Long localId) {
         if(!usuarioRepository.existsById(usuarioId)){
-            throw new RuntimeException(); //usuario nao encontrado
+            throw new UsuarioNaoEncontradoException(usuarioId);
         }
         if(!localRepository.existsById(localId)){
-            throw new RuntimeException(); //local nao encontrado
+            throw new LocalNaoEncontradoException(localId);
         }
         return avaliacaoRepository.findByUsuarioIdAndLocalId(usuarioId, localId);
     }

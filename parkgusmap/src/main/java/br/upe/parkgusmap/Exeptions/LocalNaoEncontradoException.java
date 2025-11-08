@@ -5,7 +5,7 @@ public class LocalNaoEncontradoException extends RuntimeException {
         super(message);
     }
 
-    public LocalNaoEncontradoException(){
-        super("Bad Request - Local não encontrado");
+    public LocalNaoEncontradoException(Long id) {
+        super("Bad Request - Local não encontrado com o id: " + id);
     }
 }
