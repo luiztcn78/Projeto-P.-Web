@@ -1,7 +1,9 @@
 package br.upe.parkgusmap.services.impl;
 import br.upe.parkgusmap.Exeptions.EmailJaCadastradoException;
+import br.upe.parkgusmap.Exeptions.LocalJaFavoritadoException;
 import br.upe.parkgusmap.Exeptions.NomeDeUsuarioInvalidoException;
 import br.upe.parkgusmap.Exeptions.UsuarioNaoEncontradoException;
+import br.upe.parkgusmap.entities.DTOs.UsuarioResponsivoDTO;
 import br.upe.parkgusmap.entities.Enums.Perfil;
 import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.Usuario;
@@ -11,7 +13,6 @@ import br.upe.parkgusmap.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,8 +23,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     LocalRepository localRepository;
-    @Autowired
-    private UsuarioService usuarioService;
 
     @Override
     public Usuario cadastrarUsuario(Usuario usuario) {
@@ -91,35 +90,35 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public boolean adicionarLocalFavorito(Long localId, Long  usuarioId) {
+    public UsuarioResponsivoDTO adicionarLocalFavorito(Long localId, Long  usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
         Local local = localRepository.findById(localId).orElse(null);
 
-        if (usuario != null) {
-            List<Local> locaisFavoritos = usuario.getLocaisFavoritos();
-            locaisFavoritos.add(local);
-            usuario.setLocaisFavoritos(locaisFavoritos);
-            usuarioRepository.save(usuario);
-            return true;
+        if (usuario == null) {
+            throw new UsuarioNaoEncontradoException(usuarioId);
         }
-
-        return false;
+        if(usuario.getLocaisFavoritos().contains(local)) {
+            throw new LocalJaFavoritadoException(localId);
+        }
+        List<Local> locaisFavoritos = usuario.getLocaisFavoritos();
+        locaisFavoritos.add(local);
+        usuario.setLocaisFavoritos(locaisFavoritos);
+        usuarioRepository.save(usuario);
+        return new UsuarioResponsivoDTO(usuario);
     }
 
     @Override
-    public boolean removeLocalFavorito(Long localId,  Long usuarioId) {
+    public void removeLocalFavorito(Long localId,  Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
         Local local = localRepository.findById(localId).orElse(null);
 
-        if (usuario != null) {
-            List<Local> locaisFavoritos = usuario.getLocaisFavoritos();
-            locaisFavoritos.remove(local);
-            usuario.setLocaisFavoritos(locaisFavoritos);
-            usuarioRepository.save(usuario);
-            return true;
+        if (usuario == null) {
+            throw new UsuarioNaoEncontradoException(usuarioId);
         }
-
-        return false;
+        List<Local> locaisFavoritos = usuario.getLocaisFavoritos();
+        locaisFavoritos.remove(local);
+        usuario.setLocaisFavoritos(locaisFavoritos);
+        usuarioRepository.save(usuario);
     }
 }
 

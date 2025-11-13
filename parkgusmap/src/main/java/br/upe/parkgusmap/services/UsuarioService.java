@@ -1,5 +1,6 @@
 package br.upe.parkgusmap.services;
 
+import br.upe.parkgusmap.entities.DTOs.UsuarioResponsivoDTO;
 import br.upe.parkgusmap.entities.Enums.Perfil;
 import br.upe.parkgusmap.entities.Local;
 import br.upe.parkgusmap.entities.Usuario;
@@ -21,7 +22,7 @@ public interface UsuarioService {
 
     List<Local> buscarFavoritosPorId(Long id);
 
-    boolean adicionarLocalFavorito(Long localId, Long usuarioId);
+    UsuarioResponsivoDTO adicionarLocalFavorito(Long localId, Long usuarioId);
 
-    boolean removeLocalFavorito(Long localId, Long usuarioId);
+    void removeLocalFavorito(Long localId, Long usuarioId);
 }

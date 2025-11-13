@@ -31,6 +31,11 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Perfil perfil;
 
-    @Column
-    private List<Local> LocaisFavoritos;
+    @ManyToMany
+    @JoinTable(
+            name = "locais_Favoritos",
+            joinColumns = @JoinColumn(name = "usuario_Id"),
+            inverseJoinColumns = @JoinColumn(name = "local_Id")
+    )
+    private List<Local> locaisFavoritos;
 }

@@ -40,31 +40,23 @@ public class LocalController {
     }
 
     @PostMapping
-    public LocalDTO createLocal(@Valid @RequestBody LocalDTO localDTO) {
+    public ResponseEntity<LocalDTO> createLocal(@Valid @RequestBody LocalDTO localDTO) {
         Local local = convertToEntity(localDTO);
         Local savedLocal = localService.save(local);
-        return new LocalDTO(savedLocal);
+        return ResponseEntity.ok(new LocalDTO(savedLocal));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<LocalDTO> updateLocal(@PathVariable Long id, @Valid @RequestBody LocalDTO localDTO) {
-        try {
             Local local = convertToEntity(localDTO);
             Local updatedLocal = localService.update(id, local);
             return ResponseEntity.ok(new LocalDTO(updatedLocal));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLocal(@PathVariable Long id) {
-        try {
-            localService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        localService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/administrador/{usuarioId}")

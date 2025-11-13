@@ -62,4 +62,7 @@ public class Local {
             inverseJoinColumns = @JoinColumn(name = "administrador_id")
     )
     private List<Usuario> administradores = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "locaisFavoritos")
+    private List<Usuario> usuarios_fav = new ArrayList<>();
 }

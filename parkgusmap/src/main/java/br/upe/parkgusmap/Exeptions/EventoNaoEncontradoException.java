@@ -6,6 +6,6 @@ public class EventoNaoEncontradoException extends RuntimeException{
     }
 
     public EventoNaoEncontradoException(Long id){
-        super("Bad Request - Evento não encontrado com o id: " + id);
+        super("Not Found - Evento não encontrado com o id: " + id);
     }
 }

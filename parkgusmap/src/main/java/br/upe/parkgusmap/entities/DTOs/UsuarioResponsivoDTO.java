@@ -21,13 +21,22 @@ public class UsuarioResponsivoDTO {
     private String nome;
     private String email;
     private Perfil perfil;
-    private List<Local> locaisFavoritos;
+    private List<LocalDTO> locaisFavoritos;
 
     public UsuarioResponsivoDTO(Usuario usuario) {
         this.id = usuario.getId();
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
         this.perfil = usuario.getPerfil();
-        this.locaisFavoritos = usuario.getLocaisFavoritos();
+        this.locaisFavoritos = ListLocalDTO(usuario.getLocaisFavoritos());
+    }
+
+    public List<LocalDTO> ListLocalDTO(List<Local> locais) {
+        List<LocalDTO> localDTOs = new ArrayList<>();
+        for (Local local : locais) {
+            LocalDTO localDTO = new LocalDTO(local);
+            localDTOs.add(localDTO);
+        }
+        return localDTOs;
     }
 }

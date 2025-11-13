@@ -6,6 +6,6 @@ public class InexistenciaDoIdException extends RuntimeException{
     }
 
     public InexistenciaDoIdException(Long id){
-        super("Bad Request - Este id: " + id + " não existe no sistema");
+        super("Not Found - Este id: " + id + ", não existe no sistema");
     }
 }

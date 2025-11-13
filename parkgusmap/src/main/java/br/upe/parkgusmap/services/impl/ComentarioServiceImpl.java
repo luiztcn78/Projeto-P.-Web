@@ -1,7 +1,7 @@
 package br.upe.parkgusmap.services.impl;
 
 import br.upe.parkgusmap.Exeptions.ComentarioInvalidoException;
-import br.upe.parkgusmap.Exeptions.ComentarioNaoEncontrado;
+import br.upe.parkgusmap.Exeptions.ComentarioNaoEncontradoException;
 import br.upe.parkgusmap.Exeptions.LocalNaoEncontradoException;
 import br.upe.parkgusmap.Exeptions.UsuarioNaoEncontradoException;
 import br.upe.parkgusmap.entities.Comentario;
@@ -67,7 +67,7 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Override
     public Comentario update(Long id, Comentario comentario) {
         if (!comentarioRepository.existsById(id)) {
-            throw new ComentarioNaoEncontrado(id);
+            throw new ComentarioNaoEncontradoException(id);
         }
         comentario.setId(id);
         return comentarioRepository.save(comentario);
@@ -76,7 +76,7 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Override
     public void deleteById(Long id) {
         if (!comentarioRepository.existsById(id)) {
-            throw new ComentarioNaoEncontrado(id);
+            throw new ComentarioNaoEncontradoException(id);
         }
         comentarioRepository.deleteById(id);
     }

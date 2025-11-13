@@ -6,6 +6,6 @@ public class AvaliacaoNaoEncontradaException extends RuntimeException {
     }
 
     public AvaliacaoNaoEncontradaException(Long id) {
-        super("Bad Request - Avaliação não encontrada no id: " + id);
+        super("Not Found - Avaliação não encontrada no id: " + id);
     }
 }

@@ -68,12 +68,7 @@ public class EventoController {
 
     @DeleteMapping("/{eventoId}")
     public ResponseEntity<Evento> removerEvento(@PathVariable Long eventoId){
-        try{
-            eventoService.deleteById(eventoId);
-        }
-        catch(Exception e){
-            return ResponseEntity.status(404).body(null);
-        }
+        eventoService.deleteById(eventoId);
         return ResponseEntity.status(200).body(null);
     }
 

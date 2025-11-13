@@ -6,6 +6,6 @@ public class DenunciaInexistenteException extends RuntimeException {
     }
 
     public DenunciaInexistenteException() {
-        super("Bad Request - A denúncia não está cadastrada no sistema");
+        super("Not Found - A denúncia não está cadastrada no sistema");
     }
 }

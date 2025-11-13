@@ -28,12 +28,8 @@ public class AvaliacaoComentarioController {
     public ResponseEntity<AvaliacaoDTO> criarAvaliacao(@RequestParam Long avaliadorId,
                                                        @RequestParam Long localId,
                                                        @RequestParam int nota) {
-        try {
             Avaliacao avaliacao = avaliacaoService.criarAvaliacao(avaliadorId, localId, nota);
             return ResponseEntity.ok(new AvaliacaoDTO(avaliacao));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @GetMapping("/avaliacoes/usuario/{usuarioId}")
@@ -54,16 +50,12 @@ public class AvaliacaoComentarioController {
 
     @PostMapping("/comentarios")
     public ResponseEntity<ComentarioDTO> criarComentario(@RequestBody ComentarioDTO comentarioDTO) {
-        try {
-            Comentario comentario = comentarioService.criarComentario(
-                comentarioDTO.getUsuarioId(), 
+        Comentario comentario = comentarioService.criarComentario(
+                comentarioDTO.getUsuarioId(),
                 comentarioDTO.getLocalId(), 
                 comentarioDTO.getTexto()
             );
             return ResponseEntity.ok(new ComentarioDTO(comentario));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @GetMapping("/comentarios/usuario/{usuarioId}")

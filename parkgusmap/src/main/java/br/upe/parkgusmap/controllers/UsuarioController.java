@@ -2,6 +2,7 @@ package br.upe.parkgusmap.controllers;
 
 
 import br.upe.parkgusmap.entities.Comentario;
+import br.upe.parkgusmap.entities.DTOs.LocalDTO;
 import br.upe.parkgusmap.entities.DTOs.UsuarioCreateDTO;
 import br.upe.parkgusmap.entities.DTOs.UsuarioResponsivoDTO;
 import br.upe.parkgusmap.entities.Denuncia;
@@ -85,45 +86,35 @@ public class UsuarioController {
     public ResponseEntity<Usuario> removerUsuario(@PathVariable Long usuarioId){
         boolean removido = usuarioService.removerUsuario(usuarioId);
 
-        if(removido){
-            return ResponseEntity.status(200).body(null);
-        }
-
-        return ResponseEntity.status(404).body(null);
+        return ResponseEntity.status(200).body(null);
     }
 
     //Listar Favoritos
     @GetMapping("/fav/{usuarioId}")
-    public ResponseEntity<List<Local>> buscarFavoritosUsuario(@PathVariable Long usuarioId){
-        List<Local> locaisFavoritos = usuarioService.buscarFavoritosPorId(usuarioId);
-
-        if(locaisFavoritos.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<List<LocalDTO>> buscarFavoritosUsuario(@PathVariable Long usuarioId){
+        UsuarioResponsivoDTO usuarioResponsivoDTO = new UsuarioResponsivoDTO(usuarioService.buscarUsuarioPorId(usuarioId));
+        List<LocalDTO> locaisFavoritos = usuarioResponsivoDTO.getLocaisFavoritos();
 
         return ResponseEntity.ok(locaisFavoritos);
     }
     //add fav
     @PutMapping("/fav/{localId}/{usuarioId}")
     public ResponseEntity<UsuarioResponsivoDTO> adicionarLocalAosFavoritos(@PathVariable Long localId, @PathVariable Long usuarioId){
-        boolean sucesso = usuarioService.adicionarLocalFavorito(localId, usuarioId);
+        UsuarioResponsivoDTO usuarioResponsivoDTO = usuarioService.adicionarLocalFavorito(localId, usuarioId);
         Usuario usuario = usuarioService.buscarUsuarioPorId(usuarioId);
         UsuarioResponsivoDTO dto = new UsuarioResponsivoDTO(usuario);
-        if(sucesso){
-            return ResponseEntity.status(200).body(dto);
-        }
-        return ResponseEntity.badRequest().body(dto);
+
+        return ResponseEntity.status(200).body(dto);
     }
     //remove fav
     @PutMapping("/fav/remove/{localId}/{usuarioId}")
     public ResponseEntity<UsuarioResponsivoDTO> removerLocalFavoritos(@PathVariable Long localId, @PathVariable Long usuarioId){
-        boolean sucesso = usuarioService.removeLocalFavorito(localId, usuarioId);
+        usuarioService.removeLocalFavorito(localId, usuarioId);
         Usuario usuario = usuarioService.buscarUsuarioPorId(usuarioId);
         UsuarioResponsivoDTO dto = new UsuarioResponsivoDTO(usuario);
-        if(sucesso){
-            return ResponseEntity.status(200).body(dto);
-        }
-        return ResponseEntity.badRequest().body(dto);
+
+        return ResponseEntity.status(200).body(dto);
+
     }
 
     @PostMapping("/denun")

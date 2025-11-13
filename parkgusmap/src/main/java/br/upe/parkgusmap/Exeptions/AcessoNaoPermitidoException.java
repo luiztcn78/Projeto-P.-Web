@@ -6,6 +6,6 @@ public class AcessoNaoPermitidoException extends RuntimeException {
     }
 
     public AcessoNaoPermitidoException() {
-        super("Bad Request - Acesso não permitido (O usuário não é administrador)");
+        super("Acesso Negado - Acesso não permitido (O usuário não é administrador)");
     }
 }
