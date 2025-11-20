@@ -99,15 +99,15 @@ public class LocalController {
         return ResponseEntity.ok(new LocalDTO(updatedLocal));
     }
 
-    // CORREÇÃO: Mudado de eventoId para localId no parâmetro
+    
     @PutMapping("/{localId}/descricao")
     public ResponseEntity<LocalDTO> alterarDescricao(
-            @PathVariable Long localId, // Corrigido: era eventoId
+            @PathVariable Long localId, 
             @RequestParam String novaDescricao,
             @RequestParam Long usuarioId) {
 
         Local local = localService.alterarDescricaoLocal(localId, novaDescricao, usuarioId);
-        return ResponseEntity.ok(new LocalDTO(local)); // Retornando DTO em vez de Entity
+        return ResponseEntity.ok(new LocalDTO(local)); 
     }
 
     private Local convertToEntity(LocalDTO localDTO) {
