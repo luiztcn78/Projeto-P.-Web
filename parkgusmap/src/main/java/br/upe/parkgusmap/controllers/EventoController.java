@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/evento")
@@ -19,9 +19,22 @@ public class EventoController {
     @Autowired
     private EventoService eventoService;
 
+    @GetMapping
+    public List<EventoDTO> getAllEventos() {
+        return eventoService.findAll().stream()
+                .map(EventoDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EventoDTO> getEventoById(@PathVariable Long id) {
+        return eventoService.findById(id)
+                .map(evento -> ResponseEntity.ok(new EventoDTO(evento)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<EventoDTO> registrarEvento(@RequestBody EventoDTO eventodto){
-
         Evento eventoDesDTO = eventoService.eventoDTOToEvento(eventodto);
         Evento eventoResgistro = eventoService.registrarEvento(eventoDesDTO);
 
@@ -31,13 +44,27 @@ public class EventoController {
         return ResponseEntity.status(404).body(null);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<EventoDTO> updateEvento(@PathVariable Long id, @RequestBody EventoDTO eventoDTO) {
+        Evento evento = eventoService.eventoDTOToEvento(eventoDTO);
+        Evento updatedEvento = eventoService.update(id, evento);
+        return ResponseEntity.ok(new EventoDTO(updatedEvento));
+    }
+
+    @DeleteMapping("/{eventoId}")
+    public ResponseEntity<Evento> removerEvento(@PathVariable Long eventoId){
+        eventoService.deleteById(eventoId);
+        return ResponseEntity.status(200).body(null);
+    }
+
     @GetMapping("/adm/{adminId}")
     public ResponseEntity<List<EventoDTO>> buscarEventosPorAdmin(@PathVariable Long adminId){
-        EventoDTO dto = new EventoDTO();
         List<Evento> eventos = eventoService.findByAdministradorId(adminId);
-        List<EventoDTO> eventosDTO = dto.transformarListaDTO(eventos);
+        List<EventoDTO> eventosDTO = eventos.stream()
+                .map(EventoDTO::new)
+                .collect(Collectors.toList());
 
-        if(eventosDTO != null){
+        if(!eventosDTO.isEmpty()){
             return ResponseEntity.ok(eventosDTO);
         }
         return ResponseEntity.status(404).body(null);
@@ -45,11 +72,12 @@ public class EventoController {
 
     @GetMapping("/local/{localId}")
     public ResponseEntity<List<EventoDTO>> buscarEventosLocal(@PathVariable Long localId){
-        EventoDTO dto = new EventoDTO();
         List<Evento> eventos = eventoService.findByLocalId(localId);
-        List<EventoDTO> eventosDTO = dto.transformarListaDTO(eventos);
+        List<EventoDTO> eventosDTO = eventos.stream()
+                .map(EventoDTO::new)
+                .collect(Collectors.toList());
 
-        if(eventosDTO != null){
+        if(!eventosDTO.isEmpty()){
             return ResponseEntity.ok(eventosDTO);
         }
         return ResponseEntity.status(404).body(null);
@@ -66,19 +94,26 @@ public class EventoController {
         return ResponseEntity.ok(eventoDTO);
     }
 
-    @DeleteMapping("/{eventoId}")
-    public ResponseEntity<Evento> removerEvento(@PathVariable Long eventoId){
-        eventoService.deleteById(eventoId);
-        return ResponseEntity.status(200).body(null);
+    @PutMapping("/{eventoId}/administradores/{usuarioId}")
+    public ResponseEntity<EventoDTO> addAdministrador(@PathVariable Long eventoId, @PathVariable Long usuarioId) {
+        Evento evento = eventoService.addAdministradorToEvento(eventoId, usuarioId);
+        return ResponseEntity.ok(new EventoDTO(evento));
+    }
+
+    @DeleteMapping("/{eventoId}/administradores/{usuarioId}")
+    public ResponseEntity<EventoDTO> removeAdministrador(@PathVariable Long eventoId, @PathVariable Long usuarioId) {
+        Evento evento = eventoService.removeAdministradorFromEvento(eventoId, usuarioId);
+        return ResponseEntity.ok(new EventoDTO(evento));
     }
 
     @GetMapping("/Atuais")
     public ResponseEntity<List<EventoDTO>> buscarEventosAtuais(){
-        EventoDTO dto = new EventoDTO();
         List<Evento> eventos = eventoService.findEventosFuturos();
-        List<EventoDTO> eventosDTO = dto.transformarListaDTO(eventos);
+        List<EventoDTO> eventosDTO = eventos.stream()
+                .map(EventoDTO::new)
+                .collect(Collectors.toList());
 
-        if(eventosDTO != null){
+        if(!eventosDTO.isEmpty()){
             return ResponseEntity.ok(eventosDTO);
         }
         return ResponseEntity.status(404).body(null);
@@ -86,11 +121,12 @@ public class EventoController {
 
     @GetMapping("/{inicio}/{fim}")
     public ResponseEntity<List<EventoDTO>> buscarEventosPeriodo(@PathVariable LocalDateTime inicio,@PathVariable LocalDateTime fim){
-        EventoDTO dto = new EventoDTO();
         List<Evento> eventos = eventoService.findByPeriodo(inicio, fim);
-        List<EventoDTO> eventosDTO = dto.transformarListaDTO(eventos);
+        List<EventoDTO> eventosDTO = eventos.stream()
+                .map(EventoDTO::new)
+                .collect(Collectors.toList());
 
-        if(eventosDTO != null){
+        if(!eventosDTO.isEmpty()){
             return ResponseEntity.ok(eventosDTO);
         }
         return ResponseEntity.status(404).body(null);
