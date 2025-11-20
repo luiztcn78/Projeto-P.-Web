@@ -87,6 +87,29 @@ public class LocalController {
                 .collect(Collectors.toList());
     }
 
+    @PostMapping("/{localId}/administradores/{usuarioId}")
+    public ResponseEntity<LocalDTO> addAdministrador(@PathVariable Long localId, @PathVariable Long usuarioId) {
+        Local updatedLocal = localService.addAdministradorToLocal(localId, usuarioId);
+        return ResponseEntity.ok(new LocalDTO(updatedLocal));
+    }
+
+    @DeleteMapping("/{localId}/administradores/{usuarioId}")
+    public ResponseEntity<LocalDTO> removeAdministrador(@PathVariable Long localId, @PathVariable Long usuarioId) {
+        Local updatedLocal = localService.removeAdministradorFromLocal(localId, usuarioId);
+        return ResponseEntity.ok(new LocalDTO(updatedLocal));
+    }
+
+    // CORREÇÃO: Mudado de eventoId para localId no parâmetro
+    @PutMapping("/{localId}/descricao")
+    public ResponseEntity<LocalDTO> alterarDescricao(
+            @PathVariable Long localId, // Corrigido: era eventoId
+            @RequestParam String novaDescricao,
+            @RequestParam Long usuarioId) {
+
+        Local local = localService.alterarDescricaoLocal(localId, novaDescricao, usuarioId);
+        return ResponseEntity.ok(new LocalDTO(local)); // Retornando DTO em vez de Entity
+    }
+
     private Local convertToEntity(LocalDTO localDTO) {
         Local local = new Local();
         local.setId(localDTO.getId());
@@ -103,27 +126,5 @@ public class LocalController {
         }
 
         return local;
-    }
-
-    @PostMapping("/{localId}/administradores/{usuarioId}")
-    public ResponseEntity<LocalDTO> addAdministrador(@PathVariable Long localId, @PathVariable Long usuarioId) {
-        Local updatedLocal = localService.addAdministradorToLocal(localId, usuarioId);
-        return ResponseEntity.ok(new LocalDTO(updatedLocal));
-    }
-
-    @DeleteMapping("/{localId}/administradores/{usuarioId}")
-    public ResponseEntity<LocalDTO> removeAdministrador(@PathVariable Long localId, @PathVariable Long usuarioId) {
-        Local updatedLocal = localService.removeAdministradorFromLocal(localId, usuarioId);
-        return ResponseEntity.ok(new LocalDTO(updatedLocal));
-    }
-
-    @PutMapping("/{localId}/descricao")
-    public ResponseEntity<Local> alterarDescricao(
-            @PathVariable Long eventoId,
-            @RequestParam String novaDescricao,
-            @RequestParam Long usuarioId) {
-
-        Local local = localService.alterarDescricaoLocal(eventoId, novaDescricao, usuarioId);
-        return ResponseEntity.ok(local);
     }
 }
