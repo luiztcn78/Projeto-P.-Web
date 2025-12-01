@@ -11,6 +11,8 @@ import br.upe.parkgusmap.repositories.LocalRepository;
 import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario cadastrarUsuario(Usuario usuario) {
         // validar nome
         if (usuario.getNome() == null || usuario.getNome().isEmpty()) {
-            throw new NomeDeUsuarioInvalidoException(); //nome de usuario inválido
+            throw new NomeDeUsuarioInvalidoException();
         }
 
         // valdar de email
@@ -119,6 +121,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         locaisFavoritos.remove(local);
         usuario.setLocaisFavoritos(locaisFavoritos);
         usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return usuarioRepository.findByEmail(username);
     }
 }
 

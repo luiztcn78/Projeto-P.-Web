@@ -28,19 +28,6 @@ public class UsuarioController {
     @Autowired
     DenunciaService denunciaService;
 
-
-    @PostMapping
-    public ResponseEntity<UsuarioResponsivoDTO> cadastrarUsuario(@RequestBody UsuarioCreateDTO dto) {
-        Usuario usuario = new Usuario();
-        usuario.setNome(dto.getNome());
-        usuario.setEmail(dto.getEmail());
-        usuario.setSenha(dto.getSenha());
-        usuario.setPerfil(dto.getPerfil()); // pega o enum( o tipo)
-
-        Usuario cadastrado = usuarioService.cadastrarUsuario(usuario);
-        return ResponseEntity.status(201).body(new UsuarioResponsivoDTO(cadastrado));
-    }
-
     // busca o usuario pelo id
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponsivoDTO> buscarUsuarioPorId(@PathVariable Long id) {

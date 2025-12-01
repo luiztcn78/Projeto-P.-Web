@@ -6,7 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -14,7 +18,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Usuario {
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,4 +42,23 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "local_Id")
     )
     private List<Local> locaisFavoritos;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.getPerfil() == Perfil.ADMINISTRADOR){
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMINISTRADOR"),
+                    new SimpleGrantedAuthority("ROLE_USUARIO"));
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USUARIO"));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
 }
