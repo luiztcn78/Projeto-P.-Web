@@ -28,7 +28,9 @@ public class UsuarioResponsivoDTO {
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
         this.perfil = usuario.getPerfil();
-        this.locaisFavoritos = ListLocalDTO(usuario.getLocaisFavoritos());
+        if(usuario.getLocaisFavoritos()!=null){
+            this.locaisFavoritos = ListLocalDTO(usuario.getLocaisFavoritos());
+        }
     }
 
     public List<LocalDTO> ListLocalDTO(List<Local> locais) {

@@ -28,6 +28,7 @@ public class AuthController {
 
     @Autowired
     private TokenService tokenService;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 

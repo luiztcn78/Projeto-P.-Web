@@ -23,7 +23,7 @@ public class SecurityConfig {
     SecurityFilter securityFilter;
 
     @Bean
-    public SecurityFilterChain configure(final HttpSecurity http) throws Exception {
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> {})
@@ -64,7 +64,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
-                "http://localhost"
+                "http://localhost:8080"
         ));
         configuration.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "DELETE"
