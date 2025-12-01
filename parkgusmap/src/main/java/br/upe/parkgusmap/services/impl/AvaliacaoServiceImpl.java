@@ -50,21 +50,6 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
     }
 
     @Override
-    public List<Avaliacao> findAll() {
-        return avaliacaoRepository.findAll();
-    }
-
-    @Override
-    public Optional<Avaliacao> findById(Long id) {
-        return avaliacaoRepository.findById(id);
-    }
-
-    @Override
-    public Avaliacao save(Avaliacao avaliacao) {
-        return avaliacaoRepository.save(avaliacao);
-    }
-
-    @Override
     public Avaliacao update(Long id, Avaliacao avaliacao) {
         if (!avaliacaoRepository.existsById(id)) {
             throw new AvaliacaoNaoEncontradaException(id);
@@ -83,11 +68,21 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
 
     @Override
     public List<Avaliacao> findByUsuarioId(Long usuarioId) {
+
+        if (usuarioRepository.findById(usuarioId).isEmpty()) {
+
+            throw new UsuarioNaoEncontradoException(usuarioId);
+        }
         return avaliacaoRepository.findByUsuarioId(usuarioId);
     }
 
     @Override
     public List<Avaliacao> findByLocalId(Long localId) {
+
+        if(localRepository.findById(localId).isEmpty()){
+            throw new LocalNaoEncontradoException(localId);
+        }
+
         return avaliacaoRepository.findByLocalId(localId);
     }
 
@@ -100,6 +95,20 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
             throw new LocalNaoEncontradoException(localId);
         }
         return avaliacaoRepository.findByUsuarioIdAndLocalId(usuarioId, localId);
+    }
+
+    @Override
+    public Avaliacao findById(long id) {
+        if(!avaliacaoRepository.existsById(id)){
+            throw new AvaliacaoNaoEncontradaException(id);
+        }
+
+        return avaliacaoRepository.findById(id);
+    }
+
+    @Override
+    public List<Avaliacao> findAll() {
+        return avaliacaoRepository.findAll();
     }
 
 

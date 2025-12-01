@@ -5,13 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AvaliacaoService {
-    
-    List<Avaliacao> findAll();
-    
-    Optional<Avaliacao> findById(Long id);
-    
-    Avaliacao save(Avaliacao avaliacao);
-    
+
     Avaliacao update(Long id, Avaliacao avaliacao);
     
     void deleteById(Long id);
@@ -23,4 +17,8 @@ public interface AvaliacaoService {
     List<Avaliacao> findByLocalId(Long localId);
 
     List<Avaliacao> findByUsuarioIdAndLocalId(Long usuarioId, Long localId);
+
+    Avaliacao findById(long id);
+
+    List<Avaliacao> findAll();
 }

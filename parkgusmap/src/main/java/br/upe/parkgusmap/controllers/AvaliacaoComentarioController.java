@@ -8,6 +8,7 @@ import br.upe.parkgusmap.services.AvaliacaoService;
 import br.upe.parkgusmap.services.ComentarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +36,9 @@ public class AvaliacaoComentarioController {
 
     @GetMapping("/avaliacoes/{id}")
     public ResponseEntity<AvaliacaoDTO> getAvaliacaoById(@PathVariable Long id) {
-        return avaliacaoService.findById(id)
-                .map(avaliacao -> ResponseEntity.ok(new AvaliacaoDTO(avaliacao)))
-                .orElse(ResponseEntity.notFound().build());
+        Avaliacao avaliacao = avaliacaoService.findById(id);
+        AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO(avaliacao);
+        return ResponseEntity.ok(avaliacaoDTO);
     }
 
     @PostMapping("/avaliacoes")
@@ -51,8 +52,7 @@ public class AvaliacaoComentarioController {
     @PutMapping("/avaliacoes/{id}")
     public ResponseEntity<AvaliacaoDTO> updateAvaliacao(@PathVariable Long id, 
                                                        @RequestParam int novaNota) {
-        Avaliacao avaliacaoExistente = avaliacaoService.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Avaliação não encontrada"));
+        Avaliacao avaliacaoExistente = avaliacaoService.findById(id);
         
         Avaliacao avaliacaoAtualizada = new Avaliacao();
         avaliacaoAtualizada.setId(id);
@@ -107,9 +107,9 @@ public class AvaliacaoComentarioController {
 
     @GetMapping("/comentarios/{id}")
     public ResponseEntity<ComentarioDTO> getComentarioById(@PathVariable Long id) {
-        return comentarioService.findById(id)
-                .map(comentario -> ResponseEntity.ok(new ComentarioDTO(comentario)))
-                .orElse(ResponseEntity.notFound().build());
+        Comentario comentario = comentarioService.findById(id);
+        ComentarioDTO comentarioDTO = new ComentarioDTO(comentario);
+        return ResponseEntity.ok(comentarioDTO);
     }
 
     @PostMapping("/comentarios")
@@ -125,8 +125,7 @@ public class AvaliacaoComentarioController {
     @PutMapping("/comentarios/{id}")
     public ResponseEntity<ComentarioDTO> updateComentario(@PathVariable Long id, 
                                                          @RequestBody ComentarioDTO comentarioDTO) {
-        Comentario comentarioExistente = comentarioService.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Comentário não encontrado"));
+        Comentario comentarioExistente = comentarioService.findById(id);
         
         Comentario comentarioAtualizado = new Comentario();
         comentarioAtualizado.setId(id);

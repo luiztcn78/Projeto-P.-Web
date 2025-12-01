@@ -50,21 +50,6 @@ public class ComentarioServiceImpl implements ComentarioService {
     }
 
     @Override
-    public List<Comentario> findAll() {
-        return comentarioRepository.findAll();
-    }
-
-    @Override
-    public Optional<Comentario> findById(Long id) {
-        return comentarioRepository.findById(id);
-    }
-
-    @Override
-    public Comentario save(Comentario comentario) {
-        return comentarioRepository.save(comentario);
-    }
-
-    @Override
     public Comentario update(Long id, Comentario comentario) {
         if (!comentarioRepository.existsById(id)) {
             throw new ComentarioNaoEncontradoException(id);
@@ -104,5 +89,16 @@ public class ComentarioServiceImpl implements ComentarioService {
             throw new LocalNaoEncontradoException(localId);
         }
         return comentarioRepository.findByUsuarioIdAndLocalId(usuarioId, localId);
+    }
+
+    @Override
+    public List<Comentario> findAll() {
+        return comentarioRepository.findAll();
+    }
+
+    @Override
+    public Comentario findById(Long id) {
+        return comentarioRepository.findById(id)
+                .orElseThrow(() -> new ComentarioNaoEncontradoException(id));
     }
 }
