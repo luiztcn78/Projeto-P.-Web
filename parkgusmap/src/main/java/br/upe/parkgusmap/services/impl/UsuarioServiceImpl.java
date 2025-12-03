@@ -3,6 +3,7 @@ import br.upe.parkgusmap.Exeptions.EmailJaCadastradoException;
 import br.upe.parkgusmap.Exeptions.LocalJaFavoritadoException;
 import br.upe.parkgusmap.Exeptions.NomeDeUsuarioInvalidoException;
 import br.upe.parkgusmap.Exeptions.UsuarioNaoEncontradoException;
+import br.upe.parkgusmap.entities.DTOs.UsuarioDTO;
 import br.upe.parkgusmap.entities.DTOs.UsuarioResponsivoDTO;
 import br.upe.parkgusmap.entities.Enums.Perfil;
 import br.upe.parkgusmap.entities.Local;
@@ -12,13 +13,14 @@ import br.upe.parkgusmap.repositories.UsuarioRepository;
 import br.upe.parkgusmap.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService {
+public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
@@ -125,7 +127,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usuarioRepository.findByEmail(username);
+        Usuario usuario = usuarioRepository.findByEmail(username);
+        if (usuario == null) {
+            throw new UsuarioNaoEncontradoException(username);
+        }
+        return new UsuarioDTO(usuario);
     }
 }
 

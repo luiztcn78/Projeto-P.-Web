@@ -1,8 +1,6 @@
 package br.upe.parkgusmap.controllers;
 
-import br.upe.parkgusmap.entities.DTOs.LoginDTO;
-import br.upe.parkgusmap.entities.DTOs.UsuarioCreateDTO;
-import br.upe.parkgusmap.entities.DTOs.UsuarioResponsivoDTO;
+import br.upe.parkgusmap.entities.DTOs.*;
 import br.upe.parkgusmap.entities.Usuario;
 import br.upe.parkgusmap.services.TokenService;
 import br.upe.parkgusmap.services.UsuarioService;
@@ -48,9 +46,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> autenticar(@RequestBody LoginDTO loginDTO) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getSenha());
+        System.out.println(usernamePassword);
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        String token = tokenService.generateToken((Usuario) auth.getPrincipal());
-        return ResponseEntity.ok().body(token);
+        UsuarioDTO principal = (UsuarioDTO) auth.getPrincipal();
+        String token = tokenService.generateToken(principal.getUsuario());
+
+        return ResponseEntity.ok().body(new TokenDTO(token));
     }
 }

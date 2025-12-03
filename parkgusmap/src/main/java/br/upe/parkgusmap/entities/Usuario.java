@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Usuario implements UserDetails {
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,22 +43,4 @@ public class Usuario implements UserDetails {
     )
     private List<Local> locaisFavoritos;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.getPerfil() == Perfil.ADMINISTRADOR){
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMINISTRADOR"),
-                    new SimpleGrantedAuthority("ROLE_USUARIO"));
-        }
-        return List.of(new SimpleGrantedAuthority("ROLE_USUARIO"));
-    }
-
-    @Override
-    public String getPassword() {
-        return this.senha;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
 }

@@ -1,5 +1,6 @@
 package br.upe.parkgusmap.security;
 
+import br.upe.parkgusmap.entities.DTOs.UsuarioDTO;
 import br.upe.parkgusmap.services.TokenService;
 import br.upe.parkgusmap.services.UsuarioService;
 import jakarta.servlet.FilterChain;
@@ -29,7 +30,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         String token = recoverToken(request);
         if (token != null) {
             String email = tokenService.validateToken(token);
-            UserDetails user = usuarioService.buscarPorEmail(email);
+            UserDetails user = new UsuarioDTO(usuarioService.buscarPorEmail(email));
             var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
